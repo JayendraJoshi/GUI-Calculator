@@ -6,7 +6,6 @@ public class MyFrame extends JFrame {
     public MyFrame() {
 
         setSize(1000,1000);
-        setLayout(new BorderLayout());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         JPanel calculatorPanel = getCalculatorPanel();
         add(calculatorPanel);
@@ -35,6 +34,7 @@ public class MyFrame extends JFrame {
         JButton button9 = new JButton("9");
 
         GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(0,0,0,0);
 
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; // Make buttons expand horizontally
@@ -97,15 +97,18 @@ public class MyFrame extends JFrame {
         button8.setPreferredSize(new Dimension(100, 100));
         button9.setPreferredSize(new Dimension(100, 100));
 
-        numberPanel.setBackground(Color.black);
-
         return numberPanel;
     }
 
     private JPanel getDisplayPanel(){
 
         JPanel displayPanel = new JPanel();
-        JTextField showNumbers = new JTextField("Test");
+        displayPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets= new Insets(0,0,0,0);
+
+        JTextField showNumbers = new JTextField();
+        showNumbers.setPreferredSize(new Dimension(400,100));
 
         displayPanel.add(showNumbers);
 
@@ -116,27 +119,39 @@ public class MyFrame extends JFrame {
     private JPanel getOperatorPanel(){
 
         JPanel operatorPanel = new JPanel();
-        operatorPanel.setLayout(new GridLayout(5,1));
+        operatorPanel.setLayout(new GridBagLayout());
+
+        GridBagConstraints gbc = new GridBagConstraints();
 
         JButton addition = new JButton("+");
-        JButton substraction = new JButton("-");
+        JButton subtraction = new JButton("-");
         JButton multiplication = new JButton("*");
         JButton division = new JButton("/");
         JButton equals = new JButton("=");
 
 
         addition.setPreferredSize(new Dimension(100,100));
-        substraction.setPreferredSize(new Dimension(100,100));
+        subtraction.setPreferredSize(new Dimension(100,100));
         multiplication.setPreferredSize(new Dimension(100,100));
         division.setPreferredSize(new Dimension(100,100));
         equals.setPreferredSize(new Dimension(100,100));
 
 
-        operatorPanel.add(division);
-        operatorPanel.add(multiplication);
-        operatorPanel.add(substraction);
-        operatorPanel.add(addition);
-        operatorPanel.add(equals);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        operatorPanel.add(division, gbc);
+
+        gbc.gridy = 1;  // Incremented for the next button
+        operatorPanel.add(multiplication, gbc);
+
+        gbc.gridy = 2;
+        operatorPanel.add(subtraction, gbc);
+
+        gbc.gridy = 3;
+        operatorPanel.add(addition, gbc);
+
+        gbc.gridy = 4;
+        operatorPanel.add(equals, gbc);
 
         return operatorPanel;
 
@@ -176,7 +191,6 @@ private JPanel getAdvancedOperatorsPanel(){
         calculatorPanel.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
-
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 4;
@@ -187,10 +201,10 @@ private JPanel getAdvancedOperatorsPanel(){
         gbc.gridwidth = 3;
         calculatorPanel.add(getAdvancedOperatorsPanel(), gbc);
 
-        gbc.gridx = 3; // Adjusted to place the operatorPanel on the right
-        gbc.gridy = 1; // Start from the same row as numberPanel
+        gbc.gridx = 3;
+        gbc.gridy = 1;
         gbc.gridwidth = 1;
-        gbc.gridheight = 4; // Adjusted to span the same height as numberPanel
+        gbc.gridheight = 4;
         calculatorPanel.add(getOperatorPanel(), gbc);
 
         gbc.gridx = 0;
