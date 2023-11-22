@@ -1,7 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class MyFrame extends JFrame {
+public class MyFrame extends JFrame implements MouseListener {
 
     public MyFrame() {
 
@@ -23,15 +25,15 @@ public class MyFrame extends JFrame {
 
         JButton buttonDot = new JButton(",");
         JButton button0 = new JButton("0");
-        JButton button1 = new JButton("1");
+        JButton button1 = new JButton("3");
         JButton button2 = new JButton("2");
-        JButton button3 = new JButton("3");
-        JButton button4 = new JButton("4");
+        JButton button3 = new JButton("1");
+        JButton button4 = new JButton("6");
         JButton button5 = new JButton("5");
-        JButton button6 = new JButton("6");
-        JButton button7 = new JButton("7");
+        JButton button6 = new JButton("4");
+        JButton button7 = new JButton("9");
         JButton button8 = new JButton("8");
-        JButton button9 = new JButton("9");
+        JButton button9 = new JButton("7");
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(0,0,0,0);
@@ -85,17 +87,17 @@ public class MyFrame extends JFrame {
         gbc.gridwidth = 1; // Reset to default
         numberPanel.add(buttonDot, gbc);
 
-        buttonDot.setPreferredSize(new Dimension(100, 100));
-        button0.setPreferredSize(new Dimension(100, 100));
-        button1.setPreferredSize(new Dimension(100, 100));
-        button2.setPreferredSize(new Dimension(100, 100));
-        button3.setPreferredSize(new Dimension(100, 100));
-        button4.setPreferredSize(new Dimension(100, 100));
-        button5.setPreferredSize(new Dimension(100, 100));
-        button6.setPreferredSize(new Dimension(100, 100));
-        button7.setPreferredSize(new Dimension(100, 100));
-        button8.setPreferredSize(new Dimension(100, 100));
-        button9.setPreferredSize(new Dimension(100, 100));
+        buttonDot.setPreferredSize(getPreferredButtonSize());
+        button0.setPreferredSize(getPreferredButtonSize());
+        button1.setPreferredSize(getPreferredButtonSize());
+        button2.setPreferredSize(getPreferredButtonSize());
+        button3.setPreferredSize(getPreferredButtonSize());
+        button4.setPreferredSize(getPreferredButtonSize());
+        button5.setPreferredSize(getPreferredButtonSize());
+        button6.setPreferredSize(getPreferredButtonSize());
+        button7.setPreferredSize(getPreferredButtonSize());
+        button8.setPreferredSize(getPreferredButtonSize());
+        button9.setPreferredSize(getPreferredButtonSize());
 
         return numberPanel;
     }
@@ -108,7 +110,7 @@ public class MyFrame extends JFrame {
         gbc.insets= new Insets(0,0,0,0);
 
         JTextField showNumbers = new JTextField();
-        showNumbers.setPreferredSize(new Dimension(400,100));
+        showNumbers.setPreferredSize(new Dimension(200,75));
 
         displayPanel.add(showNumbers);
 
@@ -116,72 +118,102 @@ public class MyFrame extends JFrame {
 
     }
 
-    private JPanel getOperatorPanel(){
+    private JPanel getSideOperatorPanel(){
 
-        JPanel operatorPanel = new JPanel();
-        operatorPanel.setLayout(new GridBagLayout());
+        JPanel SideOperatorPanel = new JPanel();
+        SideOperatorPanel.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(0,0,0,0);
 
         JButton addition = new JButton("+");
         JButton subtraction = new JButton("-");
         JButton multiplication = new JButton("*");
-        JButton division = new JButton("/");
         JButton equals = new JButton("=");
 
 
-        addition.setPreferredSize(new Dimension(100,100));
-        subtraction.setPreferredSize(new Dimension(100,100));
-        multiplication.setPreferredSize(new Dimension(100,100));
-        division.setPreferredSize(new Dimension(100,100));
-        equals.setPreferredSize(new Dimension(100,100));
+        addition.setPreferredSize(getPreferredButtonSize());
+        subtraction.setPreferredSize(getPreferredButtonSize());
+        multiplication.setPreferredSize(getPreferredButtonSize());
 
+        equals.setPreferredSize(getPreferredButtonSize());
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        operatorPanel.add(division, gbc);
 
         gbc.gridy = 1;  // Incremented for the next button
-        operatorPanel.add(multiplication, gbc);
+        SideOperatorPanel.add(multiplication, gbc);
 
         gbc.gridy = 2;
-        operatorPanel.add(subtraction, gbc);
+        SideOperatorPanel.add(subtraction, gbc);
 
         gbc.gridy = 3;
-        operatorPanel.add(addition, gbc);
+        SideOperatorPanel.add(addition, gbc);
 
         gbc.gridy = 4;
-        operatorPanel.add(equals, gbc);
+        SideOperatorPanel.add(equals, gbc);
 
-        return operatorPanel;
-
-
+        return SideOperatorPanel;
 
     }
-private JPanel getAdvancedOperatorsPanel(){
-        JPanel advancedOperatorPanel = new JPanel();
-        advancedOperatorPanel.setLayout(new GridBagLayout());
+private JPanel getUpperOperatorPanel(){
+        JPanel upperOperatorPanel = new JPanel();
+        upperOperatorPanel.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
+    gbc.insets = new Insets(0,0,0,0);
 
-        JButton buttonAC = new JButton("AC");
+        JButton buttonSquare= new JButton("²");
+        JButton buttonSquareRoot = new JButton("√");
+        JButton buttonDelete = new JButton("⌫");
+        JButton buttonPlaceholder = new JButton("PlaceHolder");
+        JButton buttonCE = new JButton("CE");
         JButton buttonPlusAndMinus = new JButton("+/-");
         JButton buttonPercentage = new JButton("%");
+        JButton division = new JButton("/");
 
-        buttonAC.setPreferredSize(new Dimension(100,100));
-        buttonPlusAndMinus.setPreferredSize(new Dimension(100,100));
-        buttonPercentage.setPreferredSize(new Dimension(100,100));
-        gbc.gridx=0;
-        gbc.gridy=0;
-        advancedOperatorPanel.add(buttonAC);
+        buttonPlaceholder.setPreferredSize(getPreferredButtonSize());
+        buttonSquare.setPreferredSize(getPreferredButtonSize());
+        buttonSquareRoot.setPreferredSize(getPreferredButtonSize());
+        buttonDelete.setPreferredSize(getPreferredButtonSize());
+        buttonCE.setPreferredSize(getPreferredButtonSize());
+        buttonPlusAndMinus.setPreferredSize(getPreferredButtonSize());
+        buttonPercentage.setPreferredSize(getPreferredButtonSize());
+        division.setPreferredSize(getPreferredButtonSize());
 
-        gbc.gridx=1;
-        advancedOperatorPanel.add(buttonPlusAndMinus);
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    upperOperatorPanel.add(buttonSquare, gbc);
 
-        gbc.gridx=2;
-        advancedOperatorPanel.add(buttonPercentage);
+    gbc.gridx = 1;
+    gbc.gridy = 0;
+    upperOperatorPanel.add(buttonSquareRoot, gbc);
 
-        return advancedOperatorPanel;
+    gbc.gridx = 2;
+    gbc.gridy = 0;
+    upperOperatorPanel.add(buttonPlaceholder, gbc);
+
+    gbc.gridx = 3;
+    gbc.gridy = 0;
+    upperOperatorPanel.add(buttonDelete, gbc);
+
+    gbc.gridx = 0;
+    gbc.gridy = 1;
+    upperOperatorPanel.add(buttonCE, gbc);
+
+    gbc.gridx = 1;
+    gbc.gridy = 1;
+    upperOperatorPanel.add(buttonPlusAndMinus, gbc);
+
+    gbc.gridx = 2;
+    gbc.gridy = 1;
+    upperOperatorPanel.add(buttonPercentage, gbc);
+
+    gbc.gridx=3;
+    gbc.gridy=1;
+    upperOperatorPanel.add(division,gbc);
+
+
+
+        return upperOperatorPanel;
 
 
 }
@@ -191,6 +223,7 @@ private JPanel getAdvancedOperatorsPanel(){
         calculatorPanel.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(0,0,0,0);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 4;
@@ -198,21 +231,54 @@ private JPanel getAdvancedOperatorsPanel(){
 
         gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.gridwidth = 3;
-        calculatorPanel.add(getAdvancedOperatorsPanel(), gbc);
+        gbc.gridwidth = 4;
+        gbc.gridheight=2;
+        calculatorPanel.add(getUpperOperatorPanel(), gbc);
 
         gbc.gridx = 3;
-        gbc.gridy = 1;
+        gbc.gridy = 3;
         gbc.gridwidth = 1;
         gbc.gridheight = 4;
-        calculatorPanel.add(getOperatorPanel(), gbc);
+        calculatorPanel.add(getSideOperatorPanel(), gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridwidth = 3;
         gbc.gridheight = 4;
         calculatorPanel.add(getNumberPanel(), gbc);
 
         return calculatorPanel;
+    }
+public static Dimension getPreferredButtonSize(){
+
+        int preferredWidth=50;
+        int preferredHeight=50;
+
+        return new Dimension(preferredWidth,preferredHeight);
+
+}
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
