@@ -1,24 +1,33 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class MyFrame extends JFrame implements MouseListener {
+
+public class MyFrame extends JFrame {
+
+    private String number1 = "";
+    private String number2 = "";
+    private String operator ="";
+    JButton clickedbutton;
+    JTextField showNumbers = new JTextField();
+
+    Calculate calculate = new Calculate();
 
     public MyFrame() {
 
-        setSize(1000,1000);
+        setSize(1000, 1000);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         JPanel calculatorPanel = getCalculatorPanel();
         add(calculatorPanel);
 
 
-
-    setVisible(true);
+        setVisible(true);
 
 
     }
-    private JPanel getNumberPanel(){
+
+    private JPanel getNumberPanel() {
 
         JPanel numberPanel = new JPanel();
         numberPanel.setLayout(new GridBagLayout());
@@ -36,7 +45,7 @@ public class MyFrame extends JFrame implements MouseListener {
         JButton button9 = new JButton("7");
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0,0,0,0);
+        gbc.insets = new Insets(0, 0, 0, 0);
 
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; // Make buttons expand horizontally
@@ -58,11 +67,11 @@ public class MyFrame extends JFrame implements MouseListener {
         numberPanel.add(button6, gbc);
 
         gbc.gridx = 1;
-        gbc.gridy=1;
+        gbc.gridy = 1;
         numberPanel.add(button5, gbc);
 
         gbc.gridx = 2;
-        gbc.gridy=1;
+        gbc.gridy = 1;
         numberPanel.add(button4, gbc);
 
         gbc.gridx = 0;
@@ -99,18 +108,30 @@ public class MyFrame extends JFrame implements MouseListener {
         button8.setPreferredSize(getPreferredButtonSize());
         button9.setPreferredSize(getPreferredButtonSize());
 
+        buttonDot.addActionListener(numberButtonListener);
+        button0.addActionListener(numberButtonListener);
+        button1.addActionListener(numberButtonListener);
+        button2.addActionListener(numberButtonListener);
+        button3.addActionListener(numberButtonListener);
+        button4.addActionListener(numberButtonListener);
+        button5.addActionListener(numberButtonListener);
+        button6.addActionListener(numberButtonListener);
+        button7.addActionListener(numberButtonListener);
+        button8.addActionListener(numberButtonListener);
+        button9.addActionListener(numberButtonListener);
+
+
         return numberPanel;
     }
 
-    private JPanel getDisplayPanel(){
+    private JPanel getDisplayPanel() {
 
         JPanel displayPanel = new JPanel();
         displayPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets= new Insets(0,0,0,0);
+        gbc.insets = new Insets(0, 0, 0, 0);
 
-        JTextField showNumbers = new JTextField();
-        showNumbers.setPreferredSize(new Dimension(200,75));
+        showNumbers.setPreferredSize(new Dimension(200, 75));
 
         displayPanel.add(showNumbers);
 
@@ -118,57 +139,75 @@ public class MyFrame extends JFrame implements MouseListener {
 
     }
 
-    private JPanel getSideOperatorPanel(){
+    private JPanel getSideOperatorPanel() {
 
         JPanel SideOperatorPanel = new JPanel();
         SideOperatorPanel.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0,0,0,0);
+        gbc.insets = new Insets(0, 0, 0, 0);
 
-        JButton addition = new JButton("+");
-        JButton subtraction = new JButton("-");
-        JButton multiplication = new JButton("*");
-        JButton equals = new JButton("=");
+        JButton ButtonAddition = new JButton("+");
+        JButton ButtonSubtraction = new JButton("-");
+        JButton ButtonMultiplication = new JButton("*");
+        JButton ButtonEquals = new JButton("=");
+
+        ButtonAddition.addActionListener(operatorListener);
+        ButtonSubtraction.addActionListener(operatorListener);
+        ButtonMultiplication.addActionListener(operatorListener);
+        ButtonEquals.addActionListener(equalsButtonListener);
 
 
-        addition.setPreferredSize(getPreferredButtonSize());
-        subtraction.setPreferredSize(getPreferredButtonSize());
-        multiplication.setPreferredSize(getPreferredButtonSize());
+        ButtonAddition.setPreferredSize(getPreferredButtonSize());
+        ButtonSubtraction.setPreferredSize(getPreferredButtonSize());
+        ButtonMultiplication.setPreferredSize(getPreferredButtonSize());
 
-        equals.setPreferredSize(getPreferredButtonSize());
+        ButtonEquals.setPreferredSize(getPreferredButtonSize());
 
 
         gbc.gridy = 1;  // Incremented for the next button
-        SideOperatorPanel.add(multiplication, gbc);
+        SideOperatorPanel.add(ButtonMultiplication, gbc);
 
         gbc.gridy = 2;
-        SideOperatorPanel.add(subtraction, gbc);
+        SideOperatorPanel.add(ButtonSubtraction, gbc);
 
         gbc.gridy = 3;
-        SideOperatorPanel.add(addition, gbc);
+        SideOperatorPanel.add(ButtonAddition, gbc);
 
         gbc.gridy = 4;
-        SideOperatorPanel.add(equals, gbc);
+        SideOperatorPanel.add(ButtonEquals, gbc);
 
         return SideOperatorPanel;
 
     }
-private JPanel getUpperOperatorPanel(){
+
+    private JPanel getUpperOperatorPanel() {
         JPanel upperOperatorPanel = new JPanel();
         upperOperatorPanel.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
-    gbc.insets = new Insets(0,0,0,0);
+        gbc.insets = new Insets(0, 0, 0, 0);
 
-        JButton buttonSquare= new JButton("²");
+        JButton buttonSquare = new JButton("²");
         JButton buttonSquareRoot = new JButton("√");
         JButton buttonDelete = new JButton("⌫");
         JButton buttonPlaceholder = new JButton("PlaceHolder");
         JButton buttonCE = new JButton("CE");
         JButton buttonPlusAndMinus = new JButton("+/-");
         JButton buttonPercentage = new JButton("%");
-        JButton division = new JButton("/");
+        JButton buttonDivision = new JButton("/");
+
+        /*
+        buttonSquare.addActionListener(operatorListener);
+        buttonSquareRoot.addActionListener(operatorListener);
+        buttonDelete.addActionListener(operatorListener);
+        buttonPlaceholder.addActionListener(operatorListener);
+        buttonCE.addActionListener(operatorListener);
+        buttonPlusAndMinus.addActionListener(operatorListener);
+        buttonPercentage.addActionListener(operatorListener);
+        */
+
+        buttonDivision.addActionListener(operatorListener);
 
         buttonPlaceholder.setPreferredSize(getPreferredButtonSize());
         buttonSquare.setPreferredSize(getPreferredButtonSize());
@@ -177,53 +216,54 @@ private JPanel getUpperOperatorPanel(){
         buttonCE.setPreferredSize(getPreferredButtonSize());
         buttonPlusAndMinus.setPreferredSize(getPreferredButtonSize());
         buttonPercentage.setPreferredSize(getPreferredButtonSize());
-        division.setPreferredSize(getPreferredButtonSize());
+        buttonDivision.setPreferredSize(getPreferredButtonSize());
 
-    gbc.gridx = 0;
-    gbc.gridy = 0;
-    upperOperatorPanel.add(buttonSquare, gbc);
+        buttonDelete.addActionListener(deleteSingleDigitButtonListener);
 
-    gbc.gridx = 1;
-    gbc.gridy = 0;
-    upperOperatorPanel.add(buttonSquareRoot, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        upperOperatorPanel.add(buttonSquare, gbc);
 
-    gbc.gridx = 2;
-    gbc.gridy = 0;
-    upperOperatorPanel.add(buttonPlaceholder, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        upperOperatorPanel.add(buttonSquareRoot, gbc);
 
-    gbc.gridx = 3;
-    gbc.gridy = 0;
-    upperOperatorPanel.add(buttonDelete, gbc);
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        upperOperatorPanel.add(buttonPlaceholder, gbc);
 
-    gbc.gridx = 0;
-    gbc.gridy = 1;
-    upperOperatorPanel.add(buttonCE, gbc);
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        upperOperatorPanel.add(buttonDelete, gbc);
 
-    gbc.gridx = 1;
-    gbc.gridy = 1;
-    upperOperatorPanel.add(buttonPlusAndMinus, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        upperOperatorPanel.add(buttonCE, gbc);
 
-    gbc.gridx = 2;
-    gbc.gridy = 1;
-    upperOperatorPanel.add(buttonPercentage, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        upperOperatorPanel.add(buttonPlusAndMinus, gbc);
 
-    gbc.gridx=3;
-    gbc.gridy=1;
-    upperOperatorPanel.add(division,gbc);
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        upperOperatorPanel.add(buttonPercentage, gbc);
 
+        gbc.gridx = 3;
+        gbc.gridy = 1;
+        upperOperatorPanel.add(buttonDivision, gbc);
 
 
         return upperOperatorPanel;
 
 
-}
+    }
 
-    private JPanel getCalculatorPanel(){
+    private JPanel getCalculatorPanel() {
         JPanel calculatorPanel = new JPanel();
         calculatorPanel.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0,0,0,0);
+        gbc.insets = new Insets(0, 0, 0, 0);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 4;
@@ -232,7 +272,7 @@ private JPanel getUpperOperatorPanel(){
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 4;
-        gbc.gridheight=2;
+        gbc.gridheight = 2;
         calculatorPanel.add(getUpperOperatorPanel(), gbc);
 
         gbc.gridx = 3;
@@ -249,36 +289,79 @@ private JPanel getUpperOperatorPanel(){
 
         return calculatorPanel;
     }
-public static Dimension getPreferredButtonSize(){
 
-        int preferredWidth=50;
-        int preferredHeight=50;
+    public static Dimension getPreferredButtonSize() {
 
-        return new Dimension(preferredWidth,preferredHeight);
+        int preferredWidth = 50;
+        int preferredHeight = 50;
 
-}
-    @Override
-    public void mouseClicked(MouseEvent e) {
+        return new Dimension(preferredWidth, preferredHeight);
 
     }
 
+    ActionListener numberButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+
+            if(number2=="" && operator=="") {
+                    clickedbutton = (JButton) e.getSource();
+                    number1 += clickedbutton.getText();
+                    showNumbers.setText(number1);
+            }
+
+             else if(number1!="" && operator!=""){
+                     clickedbutton = (JButton) e.getSource();
+                     number2 += clickedbutton.getText();
+                     showNumbers.setText(number1 +" " +operator+" "+number2);
+            }
+
+
+        }
+    };
+        ActionListener operatorListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                        if(number2==""){
+                        clickedbutton = (JButton) e.getSource();
+                        operator = clickedbutton.getText();
+                        showNumbers.setText(number1 + " " + operator);
+                    }
+                }
+        }  ;
+
+    ActionListener deleteSingleDigitButtonListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String currentText = showNumbers.getText();
+
+            if(currentText.isEmpty()){
+
+            }
+            else if(Character.isDigit(currentText.charAt(currentText.length()-1))){
+                if(!number2.isEmpty()){
+                    number2=number2.substring(0,number2.length()-1);
+                }
+            }
+            else if(!operator.isEmpty()){
+                operator="";
+            }
+            else{
+                number1 = number1.substring(0, number1.length() - 1);
+            }
+            showNumbers.setText(number1 +" "+operator+ " "+number2);
+        }
+    };
+ActionListener equalsButtonListener = new ActionListener() {
     @Override
-    public void mousePressed(MouseEvent e) {
-
+    public void actionPerformed(ActionEvent e) {
+        if ((!number1.isEmpty() && !operator.isEmpty() && !number2.isEmpty())){
+            String equation = showNumbers.getText();
+            calculate.determine(equation);
+        }
     }
+};
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
 
-    }
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
 }
