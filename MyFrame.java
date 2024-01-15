@@ -2,13 +2,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MyFrame extends JFrame {
 
     private String number1 = "";
     private String number2 = "";
-    private String operator ="";
+    private String operator = "";
+    private String result = "";
     JButton clickedbutton;
     JTextField showNumbers = new JTextField();
 
@@ -303,65 +307,156 @@ public class MyFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-
-            if(number2=="" && operator=="") {
-                    clickedbutton = (JButton) e.getSource();
-                    number1 += clickedbutton.getText();
-                    showNumbers.setText(number1);
+            if (number2 == "" && operator == "") {
+                clickedbutton = (JButton) e.getSource();
+                number1 += clickedbutton.getText();
+                showNumbers.setText(number1);
+            } else if (number1 != "" && operator != "") {
+                clickedbutton = (JButton) e.getSource();
+                number2 += clickedbutton.getText();
+                showNumbers.setText(number1 + " " + operator + " " + number2);
             }
-
-             else if(number1!="" && operator!=""){
-                     clickedbutton = (JButton) e.getSource();
-                     number2 += clickedbutton.getText();
-                     showNumbers.setText(number1 +" " +operator+" "+number2);
-            }
-
 
         }
     };
-        ActionListener operatorListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                        if(number2==""){
-                        clickedbutton = (JButton) e.getSource();
-                        operator = clickedbutton.getText();
-                        showNumbers.setText(number1 + " " + operator);
-                    }
-                }
-        }  ;
-
-    ActionListener deleteSingleDigitButtonListener = new ActionListener() {
+    ActionListener operatorListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String currentText = showNumbers.getText();
 
-            if(currentText.isEmpty()){
+            if ((calculate.hasResult(showNumbers.getText()))){
+               /* clickedbutton = (JButton) e.getSource();
+                operator = clickedbutton.getText();
+                showNumbers.setText(deleteLastCharacter()+ " " + operator);*/
+
 
             }
-            else if(Character.isDigit(currentText.charAt(currentText.length()-1))){
-                if(!number2.isEmpty()){
-                    number2=number2.substring(0,number2.length()-1);
+            else if(number2 == "") {
+                clickedbutton = (JButton) e.getSource();
+                operator = clickedbutton.getText();
+                showNumbers.setText(number1 + " " + operator);
+            }
+
+        }
+
+
+    };
+
+        ActionListener deleteSingleDigitButtonListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                String[] updatedArray = calculate.extractNumbersAndOperatorToArray(deleteLastCharacter());
+                //  calculate.extractValuesFromArray(updatedArray);
+
+                number1 = updatedArray[0];
+                operator = updatedArray[1];
+                number2 = updatedArray[2];
+                result = updatedArray[3];
+
+                setShowNumbers(updatedArray);
+            /*
+            catch(Exception es){
+
+            }
+
+
+                else if(!updatedArray[2].isEmpty()){
+                    showNumbers.setText(number1 + " " + operator + " " + number2);
+                }
+                else if(!updatedArray[1].isEmpty()){
+                    showNumbers.setText((number1 + " "+ operator));
+                }
+                else if(!updatedArray[0].isEmpty()){
+                    showNumbers.setText((number1));
+                }
+                else{
+                    showNumbers.setText("");
+                }
+
+            }
+            catch (Exception es){
+
+            }
+*/
+                calculate.reset();
+
+            }
+
+
+        };
+        ActionListener equalsButtonListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if (showNumbers.getText().contains("=")) {
+
+                } else if ((!number1.isEmpty() && !operator.isEmpty() && !number2.isEmpty())) {
+                    String equation = showNumbers.getText();
+                    String showResult = calculate.returnResultEquation(equation);
+                    showNumbers.setText(showResult);
+                    calculate.reset();
                 }
             }
-            else if(!operator.isEmpty()){
-                operator="";
-            }
-            else{
-                number1 = number1.substring(0, number1.length() - 1);
-            }
-            showNumbers.setText(number1 +" "+operator+ " "+number2);
+        };
+
+        private void reset() {
+
+            number1 = "";
+            number2 = "";
+            operator = "";
         }
-    };
-ActionListener equalsButtonListener = new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if ((!number1.isEmpty() && !operator.isEmpty() && !number2.isEmpty())){
-            String equation = showNumbers.getText();
-            calculate.determine(equation);
-        }
+
+        private String deleteLastCharacter() {
+            String currentText = showNumbers.getText();
+            Pattern pattern = Pattern.compile("=\\s*([0-9]+(\\.[0-9]+)?)");
+            Matcher matcher = pattern.matcher(currentText);
+/*
+    if(currentText.isEmpty()){
     }
-};
+    else if(currentText.length()==1){
+        currentText="";
+    }
+    else if (currentText.charAt(currentText.length()-1)== ' ') {
+        currentText= currentText.substring(0,currentText.length()-2);
+    }
+    else{
+        currentText= currentText.substring(0,currentText.length()-1);
+    }
+    System.out.println(currentText);
+
+ */
+            if (!currentText.isEmpty()) {
+                if (matcher.find()) {
+                    currentText = matcher.group(1);
+                } else if (currentText.charAt(currentText.length() - 1) == ' ') {
+                    currentText = currentText.substring(0, currentText.length() - 2);
+                } else {
+                    currentText = currentText.substring(0, currentText.length() - 1);
+                }
+            }
+
+            System.out.println(currentText);
+            return currentText;
+        }
+
+        private void setShowNumbers(String[] updatedArray) {
 
 
+
+
+            if (!updatedArray[3].isEmpty()) {
+                showNumbers.setText(number1 + " " + operator + " " + number2 + " = " + result);
+            }
+            if (!updatedArray[2].isEmpty()) {
+                showNumbers.setText(number1 + " " + operator + " " + number2);
+            } else if (!updatedArray[1].isEmpty()) {
+                showNumbers.setText((number1 + " " + operator));
+            } else if (!updatedArray[0].isEmpty()) {
+                showNumbers.setText((number1));
+            } else {
+                showNumbers.setText("");
+            }
+
+        }
 
 }
