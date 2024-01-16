@@ -13,6 +13,7 @@ public class Calculate {
 
         String[] temp = extractNumbersAndOperatorToArray(equation);
         resultString = chooseCalculation(temp);
+        System.out.println(resultString + " resultstring");
         return number1String + " " + operatorString + " " + number2String + " = " + resultString;
 
     }
@@ -104,23 +105,27 @@ public class Calculate {
 
          */
 
-        for (char c : equation.toCharArray()) {
-            if (Character.isDigit(c) || c == '.') {
+        for (int i = 0; i < equation.length(); i++) {
+            currentChar = equation.charAt(i);
+
+            if (currentChar == '-' && number1String.isEmpty()) {
+                number1String += currentChar;
+            } else if (Character.isDigit(currentChar) || currentChar == '.') {
                 if (operatorString.isEmpty()) {
-                    number1String += c;
-                } else if (!isResult) {
-                    number2String += c;
+                    number1String += currentChar;
+                } else if (!operatorString.contains("=")) {
+                    number2String += currentChar;
                 } else {
-                    resultString += c;
+                    resultString += currentChar;
                 }
-            } else if (c != ' ') {
-                if (c == '=') {
-                    isResult = true;
-                } else {
-                    operatorString += c;
-                }
+            } else {
+                operatorString += currentChar;
+
             }
         }
+        operatorString =operatorString.replace("=","");
+        operatorString = operatorString.replace(" ","");
+        operatorString = operatorString.replace(".","");
 
         return new String[]{number1String, operatorString, number2String, resultString};
 
@@ -155,7 +160,7 @@ public class Calculate {
                 }
             }
             catch (Exception e){
-                System.out.println("Error");
+
             }
 
         }
@@ -233,7 +238,7 @@ private String chooseCalculation(String array[]){
         isResult=false;
     }
     public boolean hasResult(String equation){
-        Pattern pattern = Pattern.compile("=\\s*([0-9]+(\\.[0-9]+)?)");
+        Pattern pattern = Pattern.compile("=\\s*(-?[0-9]+(\\.[0-9]+)?)");
 
         // Create a matcher with the input string
         Matcher matcher = pattern.matcher(equation);

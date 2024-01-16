@@ -310,11 +310,12 @@ public class MyFrame extends JFrame {
             if (number2 == "" && operator == "") {
                 clickedbutton = (JButton) e.getSource();
                 number1 += clickedbutton.getText();
-                showNumbers.setText(number1);
+               showNumbers.setText(number1);
+
             } else if (number1 != "" && operator != "") {
                 clickedbutton = (JButton) e.getSource();
                 number2 += clickedbutton.getText();
-                showNumbers.setText(number1 + " " + operator + " " + number2);
+                showNumbers.setText(number1 + " "+operator +" "+ number2);
             }
 
         }
@@ -324,16 +325,23 @@ public class MyFrame extends JFrame {
         public void actionPerformed(ActionEvent e) {
 
             if ((calculate.hasResult(showNumbers.getText()))){
-               /* clickedbutton = (JButton) e.getSource();
-                operator = clickedbutton.getText();
-                showNumbers.setText(deleteLastCharacter()+ " " + operator);*/
-
-
-            }
-            else if(number2 == "") {
                 clickedbutton = (JButton) e.getSource();
                 operator = clickedbutton.getText();
-                showNumbers.setText(number1 + " " + operator);
+
+                String[] updatedArray = calculate.extractNumbersAndOperatorToArray(deleteLastCharacter());
+
+                number1=updatedArray[0];
+                updatedArray[1]=operator;
+                number2=updatedArray[2];
+                result=updatedArray[3];
+
+                setShowNumbers(updatedArray);
+            }
+            else if(number2 == "" && number1 !="") {
+                clickedbutton = (JButton) e.getSource();
+                operator = clickedbutton.getText();
+                showNumbers.setText(number1+" " + operator);
+
             }
 
         }
@@ -348,36 +356,13 @@ public class MyFrame extends JFrame {
                 String[] updatedArray = calculate.extractNumbersAndOperatorToArray(deleteLastCharacter());
                 //  calculate.extractValuesFromArray(updatedArray);
 
-                number1 = updatedArray[0];
                 operator = updatedArray[1];
                 number2 = updatedArray[2];
                 result = updatedArray[3];
+                number1 = updatedArray[0];
 
                 setShowNumbers(updatedArray);
-            /*
-            catch(Exception es){
 
-            }
-
-
-                else if(!updatedArray[2].isEmpty()){
-                    showNumbers.setText(number1 + " " + operator + " " + number2);
-                }
-                else if(!updatedArray[1].isEmpty()){
-                    showNumbers.setText((number1 + " "+ operator));
-                }
-                else if(!updatedArray[0].isEmpty()){
-                    showNumbers.setText((number1));
-                }
-                else{
-                    showNumbers.setText("");
-                }
-
-            }
-            catch (Exception es){
-
-            }
-*/
                 calculate.reset();
 
             }
@@ -387,11 +372,16 @@ public class MyFrame extends JFrame {
         ActionListener equalsButtonListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 if (showNumbers.getText().contains("=")) {
+
+                    String newResult= calculate.returnResultEquation(deleteLastCharacter());
+                    showNumbers.setText(newResult);
+                    calculate.reset();
 
                 } else if ((!number1.isEmpty() && !operator.isEmpty() && !number2.isEmpty())) {
                     String equation = showNumbers.getText();
+                    System.out.println(equation + " equation");
+                    calculate.reset();
                     String showResult = calculate.returnResultEquation(equation);
                     showNumbers.setText(showResult);
                     calculate.reset();
@@ -404,27 +394,14 @@ public class MyFrame extends JFrame {
             number1 = "";
             number2 = "";
             operator = "";
+            result="";
         }
 
         private String deleteLastCharacter() {
             String currentText = showNumbers.getText();
-            Pattern pattern = Pattern.compile("=\\s*([0-9]+(\\.[0-9]+)?)");
+            Pattern pattern = Pattern.compile("=\\s*(-?[0-9]+(\\.[0-9]+)?)");
             Matcher matcher = pattern.matcher(currentText);
-/*
-    if(currentText.isEmpty()){
-    }
-    else if(currentText.length()==1){
-        currentText="";
-    }
-    else if (currentText.charAt(currentText.length()-1)== ' ') {
-        currentText= currentText.substring(0,currentText.length()-2);
-    }
-    else{
-        currentText= currentText.substring(0,currentText.length()-1);
-    }
-    System.out.println(currentText);
 
- */
             if (!currentText.isEmpty()) {
                 if (matcher.find()) {
                     currentText = matcher.group(1);
@@ -434,16 +411,15 @@ public class MyFrame extends JFrame {
                     currentText = currentText.substring(0, currentText.length() - 1);
                 }
             }
-
-            System.out.println(currentText);
+            else{
+                reset();
+                calculate.reset();
+            }
+            System.out.println(currentText + " currentText");
             return currentText;
         }
 
         private void setShowNumbers(String[] updatedArray) {
-
-
-
-
             if (!updatedArray[3].isEmpty()) {
                 showNumbers.setText(number1 + " " + operator + " " + number2 + " = " + result);
             }
