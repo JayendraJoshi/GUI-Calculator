@@ -36,7 +36,7 @@ public class MyFrame extends JFrame {
         JPanel numberPanel = new JPanel();
         numberPanel.setLayout(new GridBagLayout());
 
-        JButton buttonDot = new JButton(",");
+        JButton buttonDot = new JButton(".");
         JButton button0 = new JButton("0");
         JButton button1 = new JButton("3");
         JButton button2 = new JButton("2");
@@ -201,15 +201,7 @@ public class MyFrame extends JFrame {
         JButton buttonPercentage = new JButton("%");
         JButton buttonDivision = new JButton("/");
 
-        /*
-        buttonSquare.addActionListener(operatorListener);
-        buttonSquareRoot.addActionListener(operatorListener);
-        buttonDelete.addActionListener(operatorListener);
-        buttonPlaceholder.addActionListener(operatorListener);
-        buttonCE.addActionListener(operatorListener);
-        buttonPlusAndMinus.addActionListener(operatorListener);
-        buttonPercentage.addActionListener(operatorListener);
-        */
+
 
         buttonDivision.addActionListener(operatorListener);
 
@@ -223,6 +215,8 @@ public class MyFrame extends JFrame {
         buttonDivision.setPreferredSize(getPreferredButtonSize());
 
         buttonDelete.addActionListener(deleteSingleDigitButtonListener);
+        buttonPlusAndMinus.addActionListener(upperOperatorListener);
+        buttonCE.addActionListener(upperOperatorListener);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -317,6 +311,41 @@ public class MyFrame extends JFrame {
                 number2 += clickedbutton.getText();
                 showNumbers.setText(number1 + " "+operator +" "+ number2);
             }
+
+        }
+    };
+
+    ActionListener upperOperatorListener = new ActionListener() {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            clickedbutton= (JButton) e.getSource();
+
+            switch (clickedbutton.getText()){
+                //Due to - being assigned to number2, number 2 is not recognized as being empty which is why no input can be added to it
+                //The same issue is true for number1
+
+                case "+/-":
+                    if(calculate.hasResult(showNumbers.getText())){
+
+                    }
+                    else if(number1!="" && number2==""){
+                        number1= "-" + number1;
+                        showNumbers.setText(number1);
+                    }
+                    else if(number1!="" && operator!=""){
+                        number2= "-" + number2;
+                        showNumbers.setText(number1 + " "+operator +" "+ number2);
+                    }
+                    break;
+                    case "CE":
+                        reset();
+                        calculate.reset();
+                        showNumbers.setText("");
+                        break;
+            }
+
+
 
         }
     };
