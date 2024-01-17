@@ -138,6 +138,8 @@ public class MyFrame extends JFrame {
         showNumbers.setPreferredSize(new Dimension(200, 75));
 
         displayPanel.add(showNumbers);
+        showNumbers.setText("0");
+        showNumbers.setEditable(false);
 
         return displayPanel;
 
@@ -250,12 +252,8 @@ public class MyFrame extends JFrame {
         gbc.gridy = 1;
         upperOperatorPanel.add(buttonDivision, gbc);
 
-
         return upperOperatorPanel;
-
-
     }
-
     private JPanel getCalculatorPanel() {
         JPanel calculatorPanel = new JPanel();
         calculatorPanel.setLayout(new GridBagLayout());
@@ -287,7 +285,6 @@ public class MyFrame extends JFrame {
 
         return calculatorPanel;
     }
-
     public static Dimension getPreferredButtonSize() {
 
         int preferredWidth = 50;
@@ -296,26 +293,30 @@ public class MyFrame extends JFrame {
         return new Dimension(preferredWidth, preferredHeight);
 
     }
-
     ActionListener numberButtonListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             clickedbutton = (JButton) e.getSource();
-
             String buttonText = clickedbutton.getText();
-
+/*
             // If the button text is a number or a decimal point
             if (Character.isDigit(buttonText.charAt(0)) || buttonText.equals(".")) {
                 if (operator.isEmpty()) {
                     // Only add the decimal point if it's not already in the number and the number is not empty
                     if (!(buttonText.equals(".") && (number1.contains(".") || number1.isEmpty()))) {
-                        number1 += buttonText;
+                        // Only add the zero if the number is not "0"
+                        if (!(buttonText.equals("0") && number1.equals("0"))) {
+                            number1 += buttonText;
+                        }
                     }
                     showNumbers.setText(number1);
                 } else {
                     // Only add the decimal point if it's not already in the number and the number is not empty
                     if (!(buttonText.equals(".") && (number2.contains(".") || number2.isEmpty()))) {
-                        number2 += buttonText;
+                        // Only add the zero if the number is not "0"
+                        if (!(buttonText.equals("0") && number2.equals("0"))) {
+                            number2 += buttonText;
+                        }
                     }
                     showNumbers.setText(number1 + " " + operator + " " + number2);
                 }
@@ -326,20 +327,42 @@ public class MyFrame extends JFrame {
                     operator = buttonText;
                     showNumbers.setText(number1 + " " + operator);
                 }
+            }*/
+            if (Character.isDigit(buttonText.charAt(0)) || buttonText.equals(".")) {
+                if (operator.isEmpty()) {
+                    // If the button text is ".", the JTextField is "0" and it does not contain "."
+                    if (buttonText.equals(".") && showNumbers.getText().equals("0") && !showNumbers.getText().contains(".")) {
+                        number1 = "0.";
+                    }
+                    // Only add the decimal point if it's not already in the number and the number is not empty
+                    else if (!(buttonText.equals(".") && (number1.contains(".") || number1.isEmpty()))) {
+                        // Only add the zero if the number is not "0"
+                        if (!(buttonText.equals("0") && number1.equals("0"))) {
+                            number1 += buttonText;
+                        }
+                    }
+                    showNumbers.setText(number1);
+                } else {
+                    // Only add the decimal point if it's not already in the number and the number is not empty
+                    if (!(buttonText.equals(".") && (number2.contains(".") || number2.isEmpty()))) {
+                        // Only add the zero if the number is not "0"
+                        if (!(buttonText.equals("0") && number2.equals("0"))) {
+                            number2 += buttonText;
+                        }
+                    }
+                    showNumbers.setText(number1 + " " + operator + " " + number2);
+                }
             }
+
+
         }
     };
 
     ActionListener upperOperatorListener = new ActionListener() {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             clickedbutton= (JButton) e.getSource();
-
             switch (clickedbutton.getText()){
-                //Due to - being assigned to number2, number 2 is not recognized as being empty which is why no input can be added to it
-                //The same issue is true for number1
-
                 case "+/-":
                     if(calculate.hasResult(showNumbers.getText())){
 
@@ -364,12 +387,9 @@ public class MyFrame extends JFrame {
                     case "CE":
                         reset();
                         calculate.reset();
-                        showNumbers.setText("");
+                        showNumbers.setText("0");
                         break;
             }
-
-
-
         }
     };
     ActionListener operatorListener = new ActionListener() {
@@ -392,13 +412,9 @@ public class MyFrame extends JFrame {
             else if(number2 == "" && number1 !="") {
                 clickedbutton = (JButton) e.getSource();
                 operator = clickedbutton.getText();
-                showNumbers.setText(number1+" " + operator);
-
+                showNumbers.setText(number1 + " " + operator);
             }
-
         }
-
-
     };
 
         ActionListener deleteSingleDigitButtonListener = new ActionListener() {
@@ -406,7 +422,6 @@ public class MyFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 String[] updatedArray = calculate.extractNumbersAndOperatorToArray(deleteLastCharacter());
-                //  calculate.extractValuesFromArray(updatedArray);
 
                 operator = updatedArray[1];
                 number2 = updatedArray[2];
@@ -416,10 +431,7 @@ public class MyFrame extends JFrame {
                 setShowNumbers(updatedArray);
 
                 calculate.reset();
-
             }
-
-
         };
         ActionListener equalsButtonListener = new ActionListener() {
             @Override
@@ -484,9 +496,7 @@ public class MyFrame extends JFrame {
             } else if (!updatedArray[0].isEmpty()) {
                 showNumbers.setText((number1));
             } else {
-                showNumbers.setText("");
+                showNumbers.setText("0");
             }
-
         }
-
 }
