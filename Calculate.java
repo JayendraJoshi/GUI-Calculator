@@ -21,96 +21,11 @@ public class Calculate {
     public String[] extractNumbersAndOperatorToArray(String equation) {
         char currentChar;
         String[] variableArray = new String[0];
-        /*
-
-        if (hasResult(equation)) {
-            variableArray = new String[4];
-            for (int i = 0; i < equation.length(); i++) {
-                currentChar = equation.charAt(i);
-
-                if (Character.isDigit(currentChar)) {
-                    if (operatorString.isEmpty()) {
-                        number1String += currentChar;
-                    } else if (!operatorString.contains("=")) {
-                        number2String += currentChar;
-                    } else {
-                        resultString += currentChar;
-                    }
-                }
-                else {
-                    operatorString += currentChar;
-                }
-
-
-            }
-            variableArray[0] = number1String;
-            variableArray[1] = operatorString;
-            variableArray[2] = number2String;
-            variableArray[3]=resultString;
-
-
-        }
-        else if(hasNumbers(equation)) {
-            variableArray = new String[3];
-            for (int i = 0; i < equation.length(); i++) {
-                currentChar = equation.charAt(i);
-
-                if (Character.isDigit(currentChar)) {
-                    if (operatorString.isEmpty()) {
-                        number1String += currentChar;
-                    } else if (!operatorString.contains("=")) {
-                        number2String += currentChar;
-                    }
-                } else {
-                    operatorString += currentChar;
-                }
-
-
-
-            }
-            variableArray[0] = number1String;
-            variableArray[1] = operatorString;
-            variableArray[2] = number2String;
-        }
-
-        else if(hasNumber1(equation)){
-            variableArray = new String[2];
-            
-            for (int i = 0; i < equation.length(); i++) {
-                currentChar = equation.charAt(i);
-
-                if (Character.isDigit(currentChar)) {
-                    if (operatorString.isEmpty()) {
-                        number1String += currentChar;
-                    }
-                }
-                else{
-                    operatorString += currentChar;
-                }
-            }
-             
-            variableArray[0] = number1String;
-            variableArray[1] = operatorString;
-             
-        }
-        operatorString =operatorString.replace("=","");
-        operatorString = operatorString.replace(" ","");
-        operatorString = operatorString.replace(".","");
-        System.out.println(number1String);
-        System.out.println(number2String);
-        System.out.println(operatorString);
-        System.out.println(resultString);
-
-    return variableArray;
-
-         */
 
         for (int i = 0; i < equation.length(); i++) {
             currentChar = equation.charAt(i);
 
-            if (currentChar == '-' && number1String.isEmpty()) {
-                number1String += currentChar;
-            } else if (Character.isDigit(currentChar) || currentChar == '.') {
+            if (Character.isDigit(currentChar) || currentChar == '.') {
                 if (operatorString.isEmpty()) {
                     number1String += currentChar;
                 } else if (!operatorString.contains("=")) {
@@ -118,19 +33,25 @@ public class Calculate {
                 } else {
                     resultString += currentChar;
                 }
+            } else if (currentChar == '-' && i < equation.length() - 1 && Character.isDigit(equation.charAt(i + 1))) {
+                if (number1String.isEmpty()) {
+                    number1String += currentChar;
+                } else if (!operatorString.isEmpty() && number2String.isEmpty()) {
+                    number2String += currentChar;
+                }
             } else {
                 operatorString += currentChar;
-
             }
+
+            operatorString = operatorString.replace("=", "");
+            operatorString = operatorString.replace(" ", "");
+            operatorString = operatorString.replace(".", "");
+            System.out.println(operatorString + " operatorstring");
+            System.out.println(number2String + " number2string");
+            System.out.println(number1String + " number1string");
         }
-        operatorString =operatorString.replace("=","");
-        operatorString = operatorString.replace(" ","");
-        operatorString = operatorString.replace(".","");
-
         return new String[]{number1String, operatorString, number2String, resultString};
-
     }
-
 
     public String extractValuesFromArray(String[] containsNumbersAndOperator){
 
@@ -215,8 +136,10 @@ private String chooseCalculation(String array[]){
         return result;
     }
     private static double subtraction(double number1, double number2){
-
-        double result= number1- number2;
+        double result= (number1) - (number2);
+        System.out.println(number1);
+        System.out.println(number2);
+        System.out.println(number1 - number2);
         return result;
     }
     private static double multiplication(double number1, double number2){

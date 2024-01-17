@@ -300,18 +300,33 @@ public class MyFrame extends JFrame {
     ActionListener numberButtonListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            clickedbutton = (JButton) e.getSource();
 
-            if (number2 == "" && operator == "") {
-                clickedbutton = (JButton) e.getSource();
-                number1 += clickedbutton.getText();
-               showNumbers.setText(number1);
+            String buttonText = clickedbutton.getText();
 
-            } else if (number1 != "" && operator != "") {
-                clickedbutton = (JButton) e.getSource();
-                number2 += clickedbutton.getText();
-                showNumbers.setText(number1 + " "+operator +" "+ number2);
+            // If the button text is a number or a decimal point
+            if (Character.isDigit(buttonText.charAt(0)) || buttonText.equals(".")) {
+                if (operator.isEmpty()) {
+                    // Only add the decimal point if it's not already in the number and the number is not empty
+                    if (!(buttonText.equals(".") && (number1.contains(".") || number1.isEmpty()))) {
+                        number1 += buttonText;
+                    }
+                    showNumbers.setText(number1);
+                } else {
+                    // Only add the decimal point if it's not already in the number and the number is not empty
+                    if (!(buttonText.equals(".") && (number2.contains(".") || number2.isEmpty()))) {
+                        number2 += buttonText;
+                    }
+                    showNumbers.setText(number1 + " " + operator + " " + number2);
+                }
             }
-
+            // If the button text is an operator
+            else if (buttonText.matches("[+-/*]")) {
+                if (!number1.isEmpty() && number2.isEmpty()) {
+                    operator = buttonText;
+                    showNumbers.setText(number1 + " " + operator);
+                }
+            }
         }
     };
 
@@ -329,13 +344,21 @@ public class MyFrame extends JFrame {
                     if(calculate.hasResult(showNumbers.getText())){
 
                     }
-                    else if(number1!="" && number2==""){
+                    else if(number1.contains("-") && number2.contains("-")){
+                        number2= number2.replace("-","");
+                        showNumbers.setText(number1 + "  "+operator +"  "+ number2);
+                    }
+                    else if(number1.contains("-") && number2=="" && operator==""){
+                        number1 = number1.replace("-","");
+                        showNumbers.setText(number1);
+                    }
+                    else if(number1!="" && number2=="" && !number1.contains("-")){
                         number1= "-" + number1;
                         showNumbers.setText(number1);
                     }
-                    else if(number1!="" && operator!=""){
+                    else if(number1!="" && operator!="" && number2!= "" && !number2.contains("-")){
                         number2= "-" + number2;
-                        showNumbers.setText(number1 + " "+operator +" "+ number2);
+                        showNumbers.setText(number1 + "  "+operator +"  "+ number2);
                     }
                     break;
                     case "CE":
@@ -406,6 +429,7 @@ public class MyFrame extends JFrame {
                     String newResult= calculate.returnResultEquation(deleteLastCharacter());
                     showNumbers.setText(newResult);
                     calculate.reset();
+                    reset();
 
                 } else if ((!number1.isEmpty() && !operator.isEmpty() && !number2.isEmpty())) {
                     String equation = showNumbers.getText();
@@ -413,6 +437,7 @@ public class MyFrame extends JFrame {
                     calculate.reset();
                     String showResult = calculate.returnResultEquation(equation);
                     showNumbers.setText(showResult);
+                    reset();
                     calculate.reset();
                 }
             }
