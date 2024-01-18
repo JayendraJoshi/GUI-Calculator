@@ -219,6 +219,7 @@ public class MyFrame extends JFrame {
         buttonDelete.addActionListener(deleteSingleDigitButtonListener);
         buttonPlusAndMinus.addActionListener(upperOperatorListener);
         buttonCE.addActionListener(upperOperatorListener);
+        buttonPercentage.addActionListener(upperOperatorListener);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -299,35 +300,7 @@ public class MyFrame extends JFrame {
             clickedbutton = (JButton) e.getSource();
             String buttonText = clickedbutton.getText();
 /*
-            // If the button text is a number or a decimal point
-            if (Character.isDigit(buttonText.charAt(0)) || buttonText.equals(".")) {
-                if (operator.isEmpty()) {
-                    // Only add the decimal point if it's not already in the number and the number is not empty
-                    if (!(buttonText.equals(".") && (number1.contains(".") || number1.isEmpty()))) {
-                        // Only add the zero if the number is not "0"
-                        if (!(buttonText.equals("0") && number1.equals("0"))) {
-                            number1 += buttonText;
-                        }
-                    }
-                    showNumbers.setText(number1);
-                } else {
-                    // Only add the decimal point if it's not already in the number and the number is not empty
-                    if (!(buttonText.equals(".") && (number2.contains(".") || number2.isEmpty()))) {
-                        // Only add the zero if the number is not "0"
-                        if (!(buttonText.equals("0") && number2.equals("0"))) {
-                            number2 += buttonText;
-                        }
-                    }
-                    showNumbers.setText(number1 + " " + operator + " " + number2);
-                }
-            }
-            // If the button text is an operator
-            else if (buttonText.matches("[+-/*]")) {
-                if (!number1.isEmpty() && number2.isEmpty()) {
-                    operator = buttonText;
-                    showNumbers.setText(number1 + " " + operator);
-                }
-            }*/
+
             if (Character.isDigit(buttonText.charAt(0)) || buttonText.equals(".")) {
                 if (operator.isEmpty()) {
                     // If the button text is ".", the JTextField is "0" and it does not contain "."
@@ -353,7 +326,26 @@ public class MyFrame extends JFrame {
                     showNumbers.setText(number1 + " " + operator + " " + number2);
                 }
             }
-
+*/
+            if (Character.isDigit(buttonText.charAt(0)) || buttonText.equals(".")) {
+                if (operator.isEmpty()) {
+                    // If the last character of number1 is "%", remove it
+                    if (!number1.isEmpty() && number1.charAt(number1.length() - 1) == '%') {
+                        number1 = number1.substring(0, number1.length() - 1);
+                    }
+                    // Add the new number or decimal point
+                    number1 += buttonText;
+                    showNumbers.setText(number1);
+                } else {
+                    // If the last character of number2 is "%", remove it
+                    if (!number2.isEmpty() && number2.charAt(number2.length() - 1) == '%') {
+                        number2 = number2.substring(0, number2.length() - 1);
+                    }
+                    // Add the new number or decimal point
+                    number2 += buttonText;
+                    showNumbers.setText(number1 + " " + operator + " " + number2);
+                }
+            }
 
         }
     };
@@ -389,6 +381,23 @@ public class MyFrame extends JFrame {
                         calculate.reset();
                         showNumbers.setText("0");
                         break;
+
+                case "%":
+                    if(number1.isEmpty() || !number1.isEmpty() && !operator.isEmpty() && number2.isEmpty()){
+
+                    }
+                    else if(operator.isEmpty() && number2.isEmpty() && result.isEmpty() && !number1.contains("%"))
+                    {
+                        number1= number1 +"%";
+                        showNumbers.setText(number1);
+                    }
+                    else if(number1!="" && operator!="" && result=="" && !number2.contains("%")){
+                        number2= number2 +"%";
+                        showNumbers.setText(number1 + "  "+operator +"  "+ number2);
+                    }
+                    break;
+
+
             }
         }
     };
