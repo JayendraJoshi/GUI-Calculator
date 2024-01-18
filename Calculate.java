@@ -18,42 +18,6 @@ public class Calculate {
         return number1String + " " + operatorString + " " + number2String + " = " + resultString;
 
     }
-/*
-    public String[] extractNumbersAndOperatorToArray(String equation) {
-        char currentChar;
-        String[] variableArray = new String[0];
-
-        for (int i = 0; i < equation.length(); i++) {
-            currentChar = equation.charAt(i);
-
-            if (Character.isDigit(currentChar) || currentChar == '.') {
-                if (operatorString.isEmpty()) {
-                    number1String += currentChar;
-                } else if (!operatorString.contains("=")) {
-                    number2String += currentChar;
-                } else {
-                    resultString += currentChar;
-                }
-            } else if (currentChar == '-' && i < equation.length() - 1 && Character.isDigit(equation.charAt(i + 1))) {
-                if (number1String.isEmpty()) {
-                    number1String += currentChar;
-                } else if (!operatorString.isEmpty() && number2String.isEmpty()) {
-                    number2String += currentChar;
-                }
-            } else {
-                operatorString += currentChar;
-            }
-
-            operatorString = operatorString.replace("=", "");
-            operatorString = operatorString.replace(" ", "");
-            operatorString = operatorString.replace(".", "");
-            System.out.println(operatorString + " operatorstring");
-            System.out.println(number2String + " number2string");
-            System.out.println(number1String + " number1string");
-        }
-        return new String[]{number1String, operatorString, number2String, resultString};
-    }
-*/
 
     public String[] extractNumbersAndOperatorToArray(String equation) {
         char currentChar;
@@ -120,33 +84,31 @@ public class Calculate {
         }
         return number1String + " " + operatorString + " " + number2String + " = " + resultString;
     }
-private String chooseCalculation(String array[]){
-    String num1 ="";
-    String num2 ="";
+private String chooseCalculation(String array[]) {
+    String num1 = "";
+    String num2 = "";
     char op = '0';
 
-    double number1 =0;
+    double number1 = 0;
     double number2 = 0;
 
-        for (int i=0;i<3;i++){
+    for (int i = 0; i < 3; i++) {
 
-            switch (i){
+        switch (i) {
 
-                case 0:
-                    num1 =(array[i]);
-                    break;
-                case 1:
-                    op = array[i].charAt(0);
-                    break;
-                case 2:
-                    num2 =(array[i]);
-                    break;
-            }
+            case 0:
+                num1 = (array[i]);
+                break;
+            case 1:
+                op = array[i].charAt(0);
+                break;
+            case 2:
+                num2 = (array[i]);
+                break;
+        }
     }
-
-        //Should use variable op instead, due to errors I have resorted to using the global variable operatorString
-
-    if(!num1.contains("%") && !num2.contains("%")) {
+    //Should use variable op instead, due to errors I have resorted to using the global variable operatorString
+    if (!num1.contains("%") && !num2.contains("%")) {
         number1 = Double.parseDouble(num1);
         number2 = Double.parseDouble(num2);
 
@@ -166,30 +128,25 @@ private String chooseCalculation(String array[]){
                 break;
 
         }
-    }
-    else{
-        if(num1.contains("%") && !num2.contains("%")){
-            number1 = Double.parseDouble(num1.replace("%",""));
+    } else {
+        if (num1.contains("%") && !num2.contains("%")) {
+            number1 = Double.parseDouble(num1.replace("%", ""));
             number2 = Double.parseDouble(num2);
-            resultString= String.valueOf(percentage(number1,number2,(byte)1,op));
-        }
-        else if(!num1.contains("%") && num2.contains("%")){
+            resultString = String.valueOf(percentage(number1, number2, (byte) 1, op));
+        } else if (!num1.contains("%") && num2.contains("%")) {
             number1 = Double.parseDouble(num1);
-            number2 = Double.parseDouble(num2.replace("%",""));
+            number2 = Double.parseDouble(num2.replace("%", ""));
             System.out.println("Starting percentage method");
-            resultString= String.valueOf(percentage(number1,number2,(byte)2,op));
+            resultString = String.valueOf(percentage(number1, number2, (byte) 2, op));
+        } else if (num1.contains("%") && num2.contains("%")) {
+            number1 = Double.parseDouble(num1.replace("%", ""));
+            number2 = Double.parseDouble(num2.replace("%", ""));
+            resultString = String.valueOf(percentage(number1, number2, (byte) 3, op));
         }
-        else if(num1.contains("%") && num2.contains("%")){
-            number1 = Double.parseDouble(num1.replace("%",""));
-            number2 = Double.parseDouble(num2.replace("%",""));
-         resultString= String.valueOf(percentage(number1,number2,(byte)3,op));
-        }
-
+        number1String = String.valueOf(number1 / 100);
     }
-        return resultString;
+    return resultString;
 }
-
-
     private static double addition(double number1, double number2){
 
         double result= number1+ number2;
@@ -227,7 +184,6 @@ private String chooseCalculation(String array[]){
         }
 
         switch (op) {
-
             case '+':
                 result = (addition(number1, number2));
                 break;

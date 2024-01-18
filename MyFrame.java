@@ -299,34 +299,6 @@ public class MyFrame extends JFrame {
         public void actionPerformed(ActionEvent e) {
             clickedbutton = (JButton) e.getSource();
             String buttonText = clickedbutton.getText();
-/*
-
-            if (Character.isDigit(buttonText.charAt(0)) || buttonText.equals(".")) {
-                if (operator.isEmpty()) {
-                    // If the button text is ".", the JTextField is "0" and it does not contain "."
-                    if (buttonText.equals(".") && showNumbers.getText().equals("0") && !showNumbers.getText().contains(".")) {
-                        number1 = "0.";
-                    }
-                    // Only add the decimal point if it's not already in the number and the number is not empty
-                    else if (!(buttonText.equals(".") && (number1.contains(".") || number1.isEmpty()))) {
-                        // Only add the zero if the number is not "0"
-                        if (!(buttonText.equals("0") && number1.equals("0"))) {
-                            number1 += buttonText;
-                        }
-                    }
-                    showNumbers.setText(number1);
-                } else {
-                    // Only add the decimal point if it's not already in the number and the number is not empty
-                    if (!(buttonText.equals(".") && (number2.contains(".") || number2.isEmpty()))) {
-                        // Only add the zero if the number is not "0"
-                        if (!(buttonText.equals("0") && number2.equals("0"))) {
-                            number2 += buttonText;
-                        }
-                    }
-                    showNumbers.setText(number1 + " " + operator + " " + number2);
-                }
-            }
-*/
             if (Character.isDigit(buttonText.charAt(0)) || buttonText.equals(".")) {
                 if (operator.isEmpty()) {
                     // If the last character of number1 is "%", remove it
@@ -426,7 +398,7 @@ public class MyFrame extends JFrame {
         }
     };
 
-        ActionListener deleteSingleDigitButtonListener = new ActionListener() {
+    ActionListener deleteSingleDigitButtonListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -442,16 +414,10 @@ public class MyFrame extends JFrame {
                 calculate.reset();
             }
         };
-        ActionListener equalsButtonListener = new ActionListener() {
+    ActionListener equalsButtonListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (showNumbers.getText().contains("=")) {
-
-                    String newResult= calculate.returnResultEquation(deleteLastCharacter());
-                    showNumbers.setText(newResult);
-                    calculate.reset();
-                    reset();
-
                 } else if ((!number1.isEmpty() && !operator.isEmpty() && !number2.isEmpty())) {
                     String equation = showNumbers.getText();
                     System.out.println(equation + " equation");
@@ -464,14 +430,13 @@ public class MyFrame extends JFrame {
             }
         };
 
-        private void reset() {
+    private void reset() {
 
             number1 = "";
             number2 = "";
             operator = "";
             result="";
         }
-
         private String deleteLastCharacter() {
             String currentText = showNumbers.getText();
             Pattern pattern = Pattern.compile("=\\s*(-?[0-9]+(\\.[0-9]+)?)");
