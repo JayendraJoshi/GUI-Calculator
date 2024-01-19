@@ -7,25 +7,24 @@ public class Calculate {
     String number2String = "";
     String resultString = "";
     boolean isResult=false;
-
-
     public String returnResultEquation(String equation) {
 
         String[] temp = extractNumbersAndOperatorToArray(equation);
+        System.out.println(temp[1]);
+        System.out.println(operatorString);
         resultString = chooseCalculation(temp);
         System.out.println(resultString + " resultstring");
         System.out.println(number1String +" "+ operatorString +" "+ number2String + " = "+ resultString);
         return number1String + " " + operatorString + " " + number2String + " = " + resultString;
 
     }
-/*
     public String[] extractNumbersAndOperatorToArray(String equation) {
         char currentChar;
 
         for (int i = 0; i < equation.length(); i++) {
             currentChar = equation.charAt(i);
 
-            if (Character.isDigit(currentChar) || currentChar == '.' || currentChar == '%') {
+            if (Character.isDigit(currentChar) || currentChar == '.' || currentChar == '%' || currentChar == '√' || currentChar == '²') {
                 if (operatorString.isEmpty()) {
                     number1String += currentChar;
                 } else if (!operatorString.contains("=")) {
@@ -49,37 +48,6 @@ public class Calculate {
         }
         return new String[]{number1String, operatorString, number2String, resultString};
     }
-*/
-public String[] extractNumbersAndOperatorToArray(String equation) {
-    char currentChar;
-
-    for (int i = 0; i < equation.length(); i++) {
-        currentChar = equation.charAt(i);
-
-        if (Character.isDigit(currentChar) || currentChar == '.' || currentChar == '%' || currentChar == '√') {
-            if (operatorString.isEmpty()) {
-                number1String += currentChar;
-            } else if (!operatorString.contains("=")) {
-                number2String += currentChar;
-            } else {
-                resultString += currentChar;
-            }
-        } else if (currentChar == '-' && i < equation.length() - 1 && Character.isDigit(equation.charAt(i + 1))) {
-            if (number1String.isEmpty()) {
-                number1String += currentChar;
-            } else if (!operatorString.isEmpty() && number2String.isEmpty()) {
-                number2String += currentChar;
-            }
-        } else {
-            operatorString += currentChar;
-        }
-
-        operatorString = operatorString.replace("=", "");
-        operatorString = operatorString.replace(" ", "");
-        operatorString = operatorString.replace(".", "");
-    }
-    return new String[]{number1String, operatorString, number2String, resultString};
-}
 
     public String extractValuesFromArray(String[] containsNumbersAndOperator){
 
@@ -118,7 +86,7 @@ public String[] extractNumbersAndOperatorToArray(String equation) {
 private String chooseCalculation(String array[]) {
     String num1 = "";
     String num2 = "";
-    char op = '0';
+    char op = ' ';
 
     double number1 = 0;
     double number2 = 0;
@@ -142,30 +110,44 @@ private String chooseCalculation(String array[]) {
                 break;
         }
     }
-    if (number1String.contains("√")||number2String.contains("√")){
-        if (number1String.contains("√")){
+
+
+    if (num1.contains("√")||num2.contains("√")){
+        System.out.println("number1String contains √");
+        if (num1.contains("√")){
             number1 = Double.parseDouble(num1.replace("√", ""));
             number1 = Math.sqrt(number1);
-            System.out.println(number1 + " number1");
         }
-        if(number2String.contains("√")){
+        if(num2.contains("√")){
             number2 = Double.parseDouble(num2.replace("√", ""));
             number2 = Math.sqrt(number2);
         }
     }
-    else if (number1String.contains("%")||number2String.contains("%")){
-        if (number1String.contains("%")){
+    else if (num1.contains("%")||num2.contains("%")){
+        System.out.println("number1String contains %");
+        if (num1.contains("%")){
             number1 = Double.parseDouble(num1.replace("%", ""));
             number1 = number1/100;
         }
-        if(number2String.contains("%")){
+        if(num2.contains("%")){
             number2 = Double.parseDouble(num2.replace("%", ""));
             number2 = number2=(number1/100)*number2;
         }
     }
-    if(!operatorString.isEmpty()) {
-        switch (operatorString.charAt(0)) {
-
+    else if(num1.contains("²")||num2.contains("²")){
+        if (num1.contains("²")){
+            System.out.println("number1String contains ²");
+            number1 = Double.parseDouble(num1.replace("²", ""));
+            number1 = number1*number1;
+        }
+        if(num2.contains("²")){
+            number2 = Double.parseDouble(num2.replace("²", ""));
+            number2 = number2*number2;
+        }
+    }
+    if((op!= '\u0000' && op!=' ')){
+        System.out.println(op + " op in chooseCalculation");
+        switch (op) {
             case '+':
                 resultString = String.valueOf(addition(number1, number2));
                 break;
@@ -181,50 +163,18 @@ private String chooseCalculation(String array[]) {
         }
     }
     else{
+        System.out.println("op is empty");
         resultString = String.valueOf(number1);
     }
+    if(number1 !=0)number1String = String.valueOf(number1);
+    if(number2 !=0)number2String = String.valueOf(number2);
+
+    operatorString= String.valueOf(op);
+
+    System.out.println(resultString + " resultstring in chooseCalculation");
 
     return resultString;
-
-
-    /*
-     else if (num1.contains("%") || num2.contains("%")) {
-        if (num1.contains("%") && !num2.contains("%")) {
-            number1 = Double.parseDouble(num1.replace("%", ""));
-            number2 = Double.parseDouble(num2);
-            resultString = String.valueOf(percentage(number1, number2, (byte) 1, op));
-        } else if (!num1.contains("%") && num2.contains("%")) {
-            number1 = Double.parseDouble(num1);
-            number2 = Double.parseDouble(num2.replace("%", ""));
-            System.out.println("Starting percentage method");
-            resultString = String.valueOf(percentage(number1, number2, (byte) 2, op));
-        } else if (num1.contains("%") && num2.contains("%")) {
-            number1 = Double.parseDouble(num1.replace("%", ""));
-            number2 = Double.parseDouble(num2.replace("%", ""));
-            resultString = String.valueOf(percentage(number1, number2, (byte) 3, op));
-        }
-        number1String = String.valueOf(number1 / 100);
-    }
-    else if(num1.contains("√") || num2.contains("√")) {
-        if (num1.contains("√") && !num2.contains("√")) {
-            number1 = Double.parseDouble(num1.replace("√", ""));
-            number2 = Double.parseDouble(num2);
-            resultString = String.valueOf(percentage(number1, number2, (byte) 1, op));
-        } else if (!num1.contains("√") && num2.contains("√")) {
-            number1 = Double.parseDouble(num1);
-            number2 = Double.parseDouble(num2.replace("√", ""));
-            resultString = String.valueOf(percentage(number1, number2, (byte) 2, op));
-        } else if (num1.contains("√") && num2.contains("√")) {
-            number1 = Double.parseDouble(num1.replace("√", ""));
-            number2 = Double.parseDouble(num2.replace("√", ""));
-            resultString = String.valueOf(percentage(number1, number2, (byte) 3, op));
-        }
-    }
-    return resultString;
-    */
 }
-
-
 
     private static double addition(double number1, double number2){
 
@@ -245,75 +195,6 @@ private String chooseCalculation(String array[]) {
         double result= number1/ number2;
         return result;
     }
-    private static double percentage(double number1, double number2, byte calculationProcedure, char op){
-        double result = 0;
-        if(calculationProcedure==1){
-            System.out.println("Inside calculationprocedure 1");
-            number1 = number1/100;
-        }
-        else if(calculationProcedure==2){
-            System.out.println("Inside calculationprocedure 2");
-            number2=(number1/100)*number2;
-            System.out.println(number2 + " number2");
-        }
-        else if(calculationProcedure==3){
-            System.out.println("Inside calculationprocedure 3");
-            number1 = number1/100;
-            number2=(number1/100)*number2;
-        }
-
-        switch (op) {
-            case '+':
-                result = (addition(number1, number2));
-                break;
-            case '-':
-                result = (subtraction(number1, number2));
-                break;
-            case '*':
-                result = (multiplication(number1, number2));
-                break;
-            case '/':
-                result = (division(number1, number2));
-                break;
-
-        }
-        return result;
-    }
-    private static double squareRoot(double number1, double number2, byte calculationProcedure, char op){
-        double result = 0;
-        if(calculationProcedure==1){
-            System.out.println("Inside calculationprocedure 1");
-            number1 = Math.sqrt(number1);
-        }
-        else if(calculationProcedure==2){
-            System.out.println("Inside calculationprocedure 2");
-            number2=Math.sqrt(number2);
-            System.out.println(number2 + " number2");
-        }
-        else if(calculationProcedure==3){
-            System.out.println("Inside calculationprocedure 3");
-            number1 = Math.sqrt(number1);
-            number2=Math.sqrt(number2);
-        }
-
-        switch (op) {
-            case '+':
-                result = (addition(number1, number2));
-                break;
-            case '-':
-                result = (subtraction(number1, number2));
-                break;
-            case '*':
-                result = (multiplication(number1, number2));
-                break;
-            case '/':
-                result = (division(number1, number2));
-                break;
-
-        }
-        return result;
-    }
-
     public void reset(){
         number1String="";
         number2String="";
