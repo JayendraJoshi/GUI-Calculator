@@ -220,6 +220,7 @@ public class MyFrame extends JFrame {
         buttonPlusAndMinus.addActionListener(upperOperatorListener);
         buttonCE.addActionListener(upperOperatorListener);
         buttonPercentage.addActionListener(upperOperatorListener);
+        buttonSquareRoot.addActionListener(upperOperatorListener);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -368,6 +369,20 @@ public class MyFrame extends JFrame {
                         showNumbers.setText(number1 + "  "+operator +"  "+ number2);
                     }
                     break;
+                case "√":
+                    if(number1.isEmpty() || !number1.isEmpty() && !operator.isEmpty() && number2.isEmpty()){
+
+                    }
+                    else if(operator.isEmpty() && number2.isEmpty() && result.isEmpty() && !number1.contains("√"))
+                    {
+                        number1= number1 +"√";
+                        showNumbers.setText(number1);
+                    }
+                    else if(number1!="" && operator!="" && result=="" && !number2.contains("√")){
+                        number2= number2 +"√";
+                        showNumbers.setText(number1 + "  "+operator +"  "+ number2);
+                    }
+                    break;
 
 
             }
@@ -418,7 +433,16 @@ public class MyFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (showNumbers.getText().contains("=")) {
-                } else if ((!number1.isEmpty() && !operator.isEmpty() && !number2.isEmpty())) {
+                }
+                else if (!number1.isEmpty() && number1.contains("√")&& number2.isEmpty() && operator.isEmpty()){
+                    String equation = showNumbers.getText();
+                    calculate.reset();
+                    String ShowResult = calculate.returnResultEquation(equation);
+                    showNumbers.setText(ShowResult);
+                    reset();
+                    calculate.reset();
+
+                }else if ((!number1.isEmpty() && !operator.isEmpty() && !number2.isEmpty())) {
                     String equation = showNumbers.getText();
                     System.out.println(equation + " equation");
                     calculate.reset();

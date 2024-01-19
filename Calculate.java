@@ -18,7 +18,7 @@ public class Calculate {
         return number1String + " " + operatorString + " " + number2String + " = " + resultString;
 
     }
-
+/*
     public String[] extractNumbersAndOperatorToArray(String equation) {
         char currentChar;
 
@@ -49,6 +49,37 @@ public class Calculate {
         }
         return new String[]{number1String, operatorString, number2String, resultString};
     }
+*/
+public String[] extractNumbersAndOperatorToArray(String equation) {
+    char currentChar;
+
+    for (int i = 0; i < equation.length(); i++) {
+        currentChar = equation.charAt(i);
+
+        if (Character.isDigit(currentChar) || currentChar == '.' || currentChar == '%' || currentChar == '√') {
+            if (operatorString.isEmpty()) {
+                number1String += currentChar;
+            } else if (!operatorString.contains("=")) {
+                number2String += currentChar;
+            } else {
+                resultString += currentChar;
+            }
+        } else if (currentChar == '-' && i < equation.length() - 1 && Character.isDigit(equation.charAt(i + 1))) {
+            if (number1String.isEmpty()) {
+                number1String += currentChar;
+            } else if (!operatorString.isEmpty() && number2String.isEmpty()) {
+                number2String += currentChar;
+            }
+        } else {
+            operatorString += currentChar;
+        }
+
+        operatorString = operatorString.replace("=", "");
+        operatorString = operatorString.replace(" ", "");
+        operatorString = operatorString.replace(".", "");
+    }
+    return new String[]{number1String, operatorString, number2String, resultString};
+}
 
     public String extractValuesFromArray(String[] containsNumbersAndOperator){
 
@@ -100,18 +131,39 @@ private String chooseCalculation(String array[]) {
                 num1 = (array[i]);
                 break;
             case 1:
-                op = array[i].charAt(0);
+                try {
+                    op = array[i].charAt(0);
+                }catch(Exception e){
+
+                }
                 break;
             case 2:
                 num2 = (array[i]);
                 break;
         }
     }
-    //Should use variable op instead, due to errors I have resorted to using the global variable operatorString
-    if (!num1.contains("%") && !num2.contains("%")) {
-        number1 = Double.parseDouble(num1);
-        number2 = Double.parseDouble(num2);
-
+    if (number1String.contains("√")||number2String.contains("√")){
+        if (number1String.contains("√")){
+            number1 = Double.parseDouble(num1.replace("√", ""));
+            number1 = Math.sqrt(number1);
+            System.out.println(number1 + " number1");
+        }
+        if(number2String.contains("√")){
+            number2 = Double.parseDouble(num2.replace("√", ""));
+            number2 = Math.sqrt(number2);
+        }
+    }
+    else if (number1String.contains("%")||number2String.contains("%")){
+        if (number1String.contains("%")){
+            number1 = Double.parseDouble(num1.replace("%", ""));
+            number1 = number1/100;
+        }
+        if(number2String.contains("%")){
+            number2 = Double.parseDouble(num2.replace("%", ""));
+            number2 = number2=(number1/100)*number2;
+        }
+    }
+    if(!operatorString.isEmpty()) {
         switch (operatorString.charAt(0)) {
 
             case '+':
@@ -126,9 +178,17 @@ private String chooseCalculation(String array[]) {
             case '/':
                 resultString = String.valueOf(division(number1, number2));
                 break;
-
         }
-    } else {
+    }
+    else{
+        resultString = String.valueOf(number1);
+    }
+
+    return resultString;
+
+
+    /*
+     else if (num1.contains("%") || num2.contains("%")) {
         if (num1.contains("%") && !num2.contains("%")) {
             number1 = Double.parseDouble(num1.replace("%", ""));
             number2 = Double.parseDouble(num2);
@@ -145,8 +205,27 @@ private String chooseCalculation(String array[]) {
         }
         number1String = String.valueOf(number1 / 100);
     }
+    else if(num1.contains("√") || num2.contains("√")) {
+        if (num1.contains("√") && !num2.contains("√")) {
+            number1 = Double.parseDouble(num1.replace("√", ""));
+            number2 = Double.parseDouble(num2);
+            resultString = String.valueOf(percentage(number1, number2, (byte) 1, op));
+        } else if (!num1.contains("√") && num2.contains("√")) {
+            number1 = Double.parseDouble(num1);
+            number2 = Double.parseDouble(num2.replace("√", ""));
+            resultString = String.valueOf(percentage(number1, number2, (byte) 2, op));
+        } else if (num1.contains("√") && num2.contains("√")) {
+            number1 = Double.parseDouble(num1.replace("√", ""));
+            number2 = Double.parseDouble(num2.replace("√", ""));
+            resultString = String.valueOf(percentage(number1, number2, (byte) 3, op));
+        }
+    }
     return resultString;
+    */
 }
+
+
+
     private static double addition(double number1, double number2){
 
         double result= number1+ number2;
@@ -181,6 +260,40 @@ private String chooseCalculation(String array[]) {
             System.out.println("Inside calculationprocedure 3");
             number1 = number1/100;
             number2=(number1/100)*number2;
+        }
+
+        switch (op) {
+            case '+':
+                result = (addition(number1, number2));
+                break;
+            case '-':
+                result = (subtraction(number1, number2));
+                break;
+            case '*':
+                result = (multiplication(number1, number2));
+                break;
+            case '/':
+                result = (division(number1, number2));
+                break;
+
+        }
+        return result;
+    }
+    private static double squareRoot(double number1, double number2, byte calculationProcedure, char op){
+        double result = 0;
+        if(calculationProcedure==1){
+            System.out.println("Inside calculationprocedure 1");
+            number1 = Math.sqrt(number1);
+        }
+        else if(calculationProcedure==2){
+            System.out.println("Inside calculationprocedure 2");
+            number2=Math.sqrt(number2);
+            System.out.println(number2 + " number2");
+        }
+        else if(calculationProcedure==3){
+            System.out.println("Inside calculationprocedure 3");
+            number1 = Math.sqrt(number1);
+            number2=Math.sqrt(number2);
         }
 
         switch (op) {
