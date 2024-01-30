@@ -203,8 +203,6 @@ public class MyFrame extends JFrame {
         JButton buttonPercentage = new JButton("%");
         JButton buttonDivision = new JButton("/");
 
-
-
         buttonDivision.addActionListener(operatorListener);
 
         buttonPlaceholder.setPreferredSize(getPreferredButtonSize());
@@ -376,11 +374,11 @@ public class MyFrame extends JFrame {
                     }
                     else if(operator.isEmpty() && number2.isEmpty() && result.isEmpty() && !number1.contains("√"))
                     {
-                        number1= number1 +"√";
+                        number1= "√" + number1;
                         showNumbers.setText(number1);
                     }
                     else if(number1!="" && operator!="" && result=="" && !number2.contains("√")){
-                        number2= number2 +"√";
+                        number2= "√" + number2;
                         showNumbers.setText(number1 + "  "+operator +"  "+ number2);
                     }
                     break;

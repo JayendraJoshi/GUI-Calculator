@@ -10,7 +10,7 @@ public class Calculate {
     public String returnResultEquation(String equation) {
 
         String[] temp = extractNumbersAndOperatorToArray(equation);
-        System.out.println(temp[1]);
+        System.out.println(temp[1] + "operator");
         System.out.println(operatorString);
         resultString = chooseCalculation(temp);
         System.out.println(resultString + " resultstring");
@@ -46,6 +46,7 @@ public class Calculate {
             operatorString = operatorString.replace(" ", "");
             operatorString = operatorString.replace(".", "");
         }
+        System.out.println(number1String + " " + operatorString + " " + number2String +"insideExtract");
         return new String[]{number1String, operatorString, number2String, resultString};
     }
 
@@ -88,6 +89,7 @@ private String chooseCalculation(String array[]) {
     String num2 = "";
     char op = ' ';
 
+    String temp="";
     double number1 = 0;
     double number2 = 0;
 
@@ -110,8 +112,10 @@ private String chooseCalculation(String array[]) {
                 break;
         }
     }
-
-
+//Need to find a way to calculate  √6² 
+    if((num1.contains("√") && num1.contains("²"))|| (num2.contains("√") && num2.contains("²"))){
+        System.out.println("String contains √²");
+    }
     if (num1.contains("√")||num2.contains("√")){
         System.out.println("number1String contains √");
         if (num1.contains("√")){
@@ -123,7 +127,7 @@ private String chooseCalculation(String array[]) {
             number2 = Math.sqrt(number2);
         }
     }
-    else if (num1.contains("%")||num2.contains("%")){
+    if (num1.contains("%")||num2.contains("%")){
         System.out.println("number1String contains %");
         if (num1.contains("%")){
             number1 = Double.parseDouble(num1.replace("%", ""));
@@ -134,7 +138,7 @@ private String chooseCalculation(String array[]) {
             number2 = number2=(number1/100)*number2;
         }
     }
-    else if(num1.contains("²")||num2.contains("²")){
+    if(num1.contains("²")||num2.contains("²")){
         if (num1.contains("²")){
             System.out.println("number1String contains ²");
             number1 = Double.parseDouble(num1.replace("²", ""));
@@ -144,6 +148,10 @@ private String chooseCalculation(String array[]) {
             number2 = Double.parseDouble(num2.replace("²", ""));
             number2 = number2*number2;
         }
+    }
+    if (number1 == 0 || number2 == 0) {
+        if(number1 == 0)number1 = Double.parseDouble(num1);
+        else number2 = Double.parseDouble(num2);
     }
     if((op!= '\u0000' && op!=' ')){
         System.out.println(op + " op in chooseCalculation");
@@ -155,7 +163,9 @@ private String chooseCalculation(String array[]) {
                 resultString = String.valueOf(subtraction(number1, number2));
                 break;
             case '*':
+            System.out.println("Mal");
                 resultString = String.valueOf(multiplication(number1, number2));
+                System.out.println(resultString);
                 break;
             case '/':
                 resultString = String.valueOf(division(number1, number2));
@@ -186,7 +196,8 @@ private String chooseCalculation(String array[]) {
         return result;
     }
     private static double multiplication(double number1, double number2){
-
+        System.out.println("in multiplication");
+        System.out.println(number1+" "+number2);
         double result= number1* number2;
         return result;
     }
