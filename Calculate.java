@@ -85,8 +85,8 @@ public class Calculate {
         return number1String + " " + operatorString + " " + number2String + " = " + resultString;
     }
 private String chooseCalculation(String array[]) {
-    String num1 = "";
-    String num2 = "";
+    String num1 = "0";
+    String num2 = "0";
     char op = ' ';
 
     String temp="";
@@ -113,8 +113,34 @@ private String chooseCalculation(String array[]) {
         }
     }
 //Need to find a way to calculate  √6² 
+
     if((num1.contains("√") && num1.contains("²"))|| (num2.contains("√") && num2.contains("²"))){
         System.out.println("String contains √²");
+        if (num1.contains("√") && num1.contains("²")){
+            num1 = (num1.replace("√", "").replace("²", ""));
+            number1 = Double.parseDouble(num1);
+            number1 = Math.sqrt(number1 *number1);
+        }
+        if(num2.contains("√") && num2.contains("²")){
+            num2 = (num2.replace("√", "").replace("²", ""));
+            number2 = Double.parseDouble(num2);
+            number2 = Math.sqrt(number2 *number2);
+        }
+    }
+    if((num1.contains("²") && num1.contains("%"))||(num2.contains("²")) && num2.contains("%")){
+        System.out.println("String contains ²%");
+        if (num1.contains("²") && num1.contains("%")){
+            num1 = (num1.replace("²", "").replace("%", ""));
+            number1 = Double.parseDouble(num1);
+            number1 = number1*(number1/100);
+            number1 = Math.sqrt(number1);
+        }
+        if(num2.contains("²") && num2.contains("%")){
+            num2 = (num2.replace("²", "").replace("%", ""));
+            number2 = Double.parseDouble(num2);
+            number2 = number2*(number2/100);
+            number2 = Math.sqrt(number2);
+        }
     }
     if (num1.contains("√")||num2.contains("√")){
         System.out.println("number1String contains √");
@@ -149,12 +175,16 @@ private String chooseCalculation(String array[]) {
             number2 = number2*number2;
         }
     }
-    if (number1 == 0 || number2 == 0) {
-        if(number1 == 0)number1 = Double.parseDouble(num1);
-        else number2 = Double.parseDouble(num2);
-    }
-    if((op!= '\u0000' && op!=' ')){
+
+   /*  if(number1==0)number1 = Double.parseDouble(num1);
+    else if(!number2.isDigit)number2 = Double.parseDouble(num2);
+    Have to check if number1 and number2 is digit, if yes than do nothing, if not than add 0
+    */
+    
+
+        if((op!= '\u0000' && op!=' ')){
         System.out.println(op + " op in chooseCalculation");
+
         switch (op) {
             case '+':
                 resultString = String.valueOf(addition(number1, number2));
@@ -262,6 +292,13 @@ private String chooseCalculation(String array[]) {
 
         // If no first match is found, or if no second match is found, return false
         return false;
+    }
+
+    public static boolean isNumeric(String str) {
+        for (char c : str.toCharArray()) {
+            if (!Character.isDigit(c)) return false;
+        }
+        return true;
     }
 
 }
