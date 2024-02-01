@@ -217,7 +217,7 @@ public class MyFrame extends JFrame {
         JButton buttonSquare = new JButton("²");
         JButton buttonSquareRoot = new JButton("√");
         JButton buttonDelete = new JButton("⌫");
-        JButton buttonReciprocal = new JButton("1/x");
+      
         JButton buttonCE = new JButton("CE");
         JButton buttonPlusAndMinus = new JButton("+/-");
         JButton buttonPercentage = new JButton("%");
@@ -225,16 +225,16 @@ public class MyFrame extends JFrame {
 
         buttonDivision.addActionListener(operatorListener);
 
-        buttonReciprocal.setPreferredSize(getPreferredButtonSize());
+       
         buttonSquare.setPreferredSize(getPreferredButtonSize());
         buttonSquareRoot.setPreferredSize(getPreferredButtonSize());
-        buttonDelete.setPreferredSize(getPreferredButtonSize());
+        buttonDelete.setPreferredSize(new Dimension(200, 100));
         buttonCE.setPreferredSize(getPreferredButtonSize());
         buttonPlusAndMinus.setPreferredSize(getPreferredButtonSize());
         buttonPercentage.setPreferredSize(getPreferredButtonSize());
         buttonDivision.setPreferredSize(getPreferredButtonSize());
 
-        buttonReciprocal.setFont(getPreferredButtonfont());
+       
         buttonSquare.setFont(getPreferredButtonfont());
         buttonSquareRoot.setFont(getPreferredButtonfont());
         buttonDelete.setFont(getPreferredButtonfont());
@@ -250,6 +250,7 @@ public class MyFrame extends JFrame {
         buttonSquareRoot.addActionListener(upperOperatorListener);
         buttonSquare.addActionListener(upperOperatorListener);
 
+
         gbc.gridx = 0;
         gbc.gridy = 0;
         upperOperatorPanel.add(buttonSquare, gbc);
@@ -258,17 +259,16 @@ public class MyFrame extends JFrame {
         gbc.gridy = 0;
         upperOperatorPanel.add(buttonSquareRoot, gbc);
 
+
         gbc.gridx = 2;
-        gbc.gridy = 0;
-        upperOperatorPanel.add(buttonReciprocal, gbc);
+    gbc.gridy = 0;
+    gbc.gridwidth = 2;
+    upperOperatorPanel.add(buttonDelete, gbc);
 
-        gbc.gridx = 3;
-        gbc.gridy = 0;
-        upperOperatorPanel.add(buttonDelete, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        upperOperatorPanel.add(buttonCE, gbc);
+    gbc.gridx = 0;
+    gbc.gridy = 1;
+    gbc.gridwidth = 1; // Reset to default
+    upperOperatorPanel.add(buttonCE, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -416,6 +416,7 @@ public class MyFrame extends JFrame {
                     }
                     break;
                 case "√":
+                System.out.println("√");
                     if(number1.isEmpty() || !number1.isEmpty() && !operator.isEmpty() && number2.isEmpty()){
 
                     }
@@ -447,12 +448,13 @@ public class MyFrame extends JFrame {
                         }
                         break;
                         case "1/x":
+                        System.out.println("1/x");
                             if(number1.isEmpty() || !number1.isEmpty() && !operator.isEmpty() && number2.isEmpty()){
 
                             }
                             else if(operator.isEmpty() && number2.isEmpty() && result.isEmpty() && !number1.contains("1/x"))
                             {
-                                number1= "1/" + number1;
+                                number1= "(1/" + number1+"";
                                 showNumbers.setText(number1);
                             }
                             else if(number1!="" && operator!="" && result=="" && !number2.contains("1/x")){
