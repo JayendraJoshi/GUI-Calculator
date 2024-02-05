@@ -2,40 +2,28 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-
 public class MyFrame extends JFrame {
-
     private String number1 = "";
     private String number2 = "";
     private String operator = "";
     private String result = "";
     JButton clickedbutton;
     JTextField showNumbers = new JTextField();
-
     Calculate calculate = new Calculate();
-
     public MyFrame() {
-
         setSize(1000, 1000);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         JPanel calculatorPanel = getCalculatorPanel();
         add(calculatorPanel);
-
-
         setVisible(true);
-
-
     }
-
     private JPanel getNumberPanel() {
-
         JPanel numberPanel = new JPanel();
         numberPanel.setLayout(new GridBagLayout());
-
         JButton buttonDot = new JButton(".");
         JButton button0 = new JButton("0");
         JButton button1 = new JButton("3");
@@ -47,59 +35,46 @@ public class MyFrame extends JFrame {
         JButton button7 = new JButton("9");
         JButton button8 = new JButton("8");
         JButton button9 = new JButton("7");
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 0, 0, 0);
-
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; // Make buttons expand horizontally
         gbc.weighty = 1.0; // Make buttons expand vertically
         gbc.gridx = 0;
         gbc.gridy = 0;
         numberPanel.add(button9, gbc);
-
         gbc.gridx = 1;
         gbc.gridy = 0;
         numberPanel.add(button8, gbc);
-
         gbc.gridx = 2;
         gbc.gridy = 0;
         numberPanel.add(button7, gbc);
-
         gbc.gridx = 0;
         gbc.gridy = 1;
         numberPanel.add(button6, gbc);
-
         gbc.gridx = 1;
         gbc.gridy = 1;
         numberPanel.add(button5, gbc);
-
         gbc.gridx = 2;
         gbc.gridy = 1;
         numberPanel.add(button4, gbc);
-
         gbc.gridx = 0;
         gbc.gridy = 2;
         numberPanel.add(button3, gbc);
-
         gbc.gridx = 1;
         gbc.gridy = 2;
         numberPanel.add(button2, gbc);
-
         gbc.gridx = 2;
         gbc.gridy = 2;
         numberPanel.add(button1, gbc);
-
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2; // This will make the button0 span two columns
         numberPanel.add(button0, gbc);
-
         gbc.gridx = 2;
         gbc.gridy = 3;
         gbc.gridwidth = 1; // Reset to default
         numberPanel.add(buttonDot, gbc);
-
         buttonDot.setPreferredSize(getPreferredButtonSize());
         button0.setPreferredSize(getPreferredButtonSize());
         button1.setPreferredSize(getPreferredButtonSize());
@@ -111,7 +86,6 @@ public class MyFrame extends JFrame {
         button7.setPreferredSize(getPreferredButtonSize());
         button8.setPreferredSize(getPreferredButtonSize());
         button9.setPreferredSize(getPreferredButtonSize());
-
         buttonDot.setFont(getPreferredButtonfont());
         button0.setFont(getPreferredButtonfont());
         button1.setFont(getPreferredButtonfont());
@@ -123,8 +97,6 @@ public class MyFrame extends JFrame {
         button7.setFont(getPreferredButtonfont());
         button8.setFont(getPreferredButtonfont());
         button9.setFont(getPreferredButtonfont());
-
-
         buttonDot.addActionListener(numberButtonListener);
         button0.addActionListener(numberButtonListener);
         button1.addActionListener(numberButtonListener);
@@ -136,96 +108,64 @@ public class MyFrame extends JFrame {
         button7.addActionListener(numberButtonListener);
         button8.addActionListener(numberButtonListener);
         button9.addActionListener(numberButtonListener);
-
-
         return numberPanel;
     }
-
     private JPanel getDisplayPanel() {
-
         JPanel displayPanel = new JPanel();
         displayPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 0, 0, 0);
-
         showNumbers.setPreferredSize(new Dimension(400, 150));
-        
-
         displayPanel.add(showNumbers);
         showNumbers.setText("0");
         showNumbers.setFont(new Font("Arial", Font.PLAIN, 25));
         showNumbers.setEditable(false);
-
         return displayPanel;
-
     }
-
     private JPanel getSideOperatorPanel() {
-
         JPanel SideOperatorPanel = new JPanel();
         SideOperatorPanel.setLayout(new GridBagLayout());
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 0, 0, 0);
-
         JButton ButtonAddition = new JButton("+");
         JButton ButtonSubtraction = new JButton("-");
         JButton ButtonMultiplication = new JButton("*");
         JButton ButtonEquals = new JButton("=");
-
         ButtonAddition.addActionListener(operatorListener);
         ButtonSubtraction.addActionListener(operatorListener);
         ButtonMultiplication.addActionListener(operatorListener);
         ButtonEquals.addActionListener(equalsButtonListener);
-
-
         ButtonAddition.setPreferredSize(getPreferredButtonSize());
         ButtonSubtraction.setPreferredSize(getPreferredButtonSize());
         ButtonMultiplication.setPreferredSize(getPreferredButtonSize());
-
         ButtonEquals.setPreferredSize(getPreferredButtonSize());
-
         ButtonAddition.setFont(getPreferredButtonfont());
         ButtonSubtraction.setFont(getPreferredButtonfont());
         ButtonMultiplication.setFont(getPreferredButtonfont());
         ButtonEquals.setFont(getPreferredButtonfont());
-
-
         gbc.gridy = 1;  // Incremented for the next button
         SideOperatorPanel.add(ButtonMultiplication, gbc);
-
         gbc.gridy = 2;
         SideOperatorPanel.add(ButtonSubtraction, gbc);
-
         gbc.gridy = 3;
         SideOperatorPanel.add(ButtonAddition, gbc);
-
         gbc.gridy = 4;
         SideOperatorPanel.add(ButtonEquals, gbc);
-
         return SideOperatorPanel;
-
     }
-
     private JPanel getUpperOperatorPanel() {
         JPanel upperOperatorPanel = new JPanel();
         upperOperatorPanel.setLayout(new GridBagLayout());
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(0, 0, 0, 0);
-
         JButton buttonSquare = new JButton("²");
         JButton buttonSquareRoot = new JButton("√");
         JButton buttonDelete = new JButton("⌫");
-      
         JButton buttonCE = new JButton("CE");
         JButton buttonPlusAndMinus = new JButton("+/-");
         JButton buttonPercentage = new JButton("%");
         JButton buttonDivision = new JButton("/");
-
         buttonDivision.addActionListener(operatorListener);
-
-       
         buttonSquare.setPreferredSize(getPreferredButtonSize());
         buttonSquareRoot.setPreferredSize(getPreferredButtonSize());
         buttonDelete.setPreferredSize(new Dimension(200, 100));
@@ -233,8 +173,6 @@ public class MyFrame extends JFrame {
         buttonPlusAndMinus.setPreferredSize(getPreferredButtonSize());
         buttonPercentage.setPreferredSize(getPreferredButtonSize());
         buttonDivision.setPreferredSize(getPreferredButtonSize());
-
-       
         buttonSquare.setFont(getPreferredButtonfont());
         buttonSquareRoot.setFont(getPreferredButtonfont());
         buttonDelete.setFont(getPreferredButtonfont());
@@ -242,46 +180,35 @@ public class MyFrame extends JFrame {
         buttonPlusAndMinus.setFont(getPreferredButtonfont());
         buttonPercentage.setFont(getPreferredButtonfont());
         buttonDivision.setFont(getPreferredButtonfont());
-
         buttonDelete.addActionListener(deleteSingleDigitButtonListener);
         buttonPlusAndMinus.addActionListener(upperOperatorListener);
         buttonCE.addActionListener(upperOperatorListener);
         buttonPercentage.addActionListener(upperOperatorListener);
         buttonSquareRoot.addActionListener(upperOperatorListener);
         buttonSquare.addActionListener(upperOperatorListener);
-
-
         gbc.gridx = 0;
         gbc.gridy = 0;
         upperOperatorPanel.add(buttonSquare, gbc);
-
         gbc.gridx = 1;
         gbc.gridy = 0;
         upperOperatorPanel.add(buttonSquareRoot, gbc);
-
-
         gbc.gridx = 2;
-    gbc.gridy = 0;
-    gbc.gridwidth = 2;
-    upperOperatorPanel.add(buttonDelete, gbc);
-
-    gbc.gridx = 0;
-    gbc.gridy = 1;
-    gbc.gridwidth = 1; // Reset to default
-    upperOperatorPanel.add(buttonCE, gbc);
-
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        upperOperatorPanel.add(buttonDelete, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1; // Reset to default
+        upperOperatorPanel.add(buttonCE, gbc);
         gbc.gridx = 1;
         gbc.gridy = 1;
         upperOperatorPanel.add(buttonPlusAndMinus, gbc);
-
         gbc.gridx = 2;
         gbc.gridy = 1;
         upperOperatorPanel.add(buttonPercentage, gbc);
-
         gbc.gridx = 3;
         gbc.gridy = 1;
         upperOperatorPanel.add(buttonDivision, gbc);
-
         return upperOperatorPanel;
     }
     private JPanel getCalculatorPanel() {
@@ -336,9 +263,12 @@ public class MyFrame extends JFrame {
             clickedbutton = (JButton) e.getSource();
             String buttonText = clickedbutton.getText();
             if (Character.isDigit(buttonText.charAt(0))) {
+                if (showNumbers.getText().charAt(0) == '0') {
+                    showNumbers.setText("");
+                }
                 if (operator.isEmpty()) {
                     // If the last character of number1 is "%", remove it
-                    if (!number1.isEmpty() && number1.charAt(number1.length() - 1) == '%') {
+                    if (!number1.isEmpty() && number1.contains("%") || number1.contains("²")) {
                         number1 = number1.substring(0, number1.length() - 1);
                     }
                     // Add the new number or decimal point
@@ -346,7 +276,7 @@ public class MyFrame extends JFrame {
                     showNumbers.setText(number1);
                 } else {
                     // If the last character of number2 is "%", remove it
-                    if (!number2.isEmpty() && number2.charAt(number2.length() - 1) == '%') {
+                    if (!number2.isEmpty() && number2.contains("%") || number2.contains("²")) {
                         number2 = number2.substring(0, number2.length() - 1);
                     }
                     // Add the new number or decimal point
@@ -354,21 +284,18 @@ public class MyFrame extends JFrame {
                     showNumbers.setText(number1 + " " + operator + " " + number2);
                 }
             }
-            else{
-                if(!number1.contains(".") && operator.isEmpty() && number2.isEmpty()){
+            else if(buttonText.equals(".")){
+                if( !number1.isEmpty() && !number1.contains(".") && operator.isEmpty() && number2.isEmpty()){
                     number1 += buttonText;
                     showNumbers.setText(number1);
                 }
-                else if(!number2.contains(".") && !number2.isEmpty() && !operator.isEmpty() && !number1.isEmpty()){
+                else if(!number2.isEmpty() && !number2.contains(".") && !operator.isEmpty() && !number1.isEmpty()){
                     number2 += buttonText;
                     showNumbers.setText(number1 + " " + operator + " " + number2);
-
                 }
             }
-
         }
     };
-
     ActionListener upperOperatorListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -376,7 +303,10 @@ public class MyFrame extends JFrame {
             switch (clickedbutton.getText()){
                 case "+/-":
                     if(calculate.hasResult(showNumbers.getText())){
-
+                    }
+                    else if(number1.contains("√") && operator.isEmpty()&& number2.isEmpty()){
+                    }
+                    else if(!number1.isEmpty() && !operator.isEmpty() && number2.contains("√")){
                     }
                     else if(number1.contains("-") && number2.contains("-")){
                         number2= number2.replace("-","");
@@ -392,7 +322,11 @@ public class MyFrame extends JFrame {
                     }
                     else if(number1!="" && operator!="" && number2!= "" && !number2.contains("-")){
                         number2= "-" + number2;
-                        showNumbers.setText(number1 + "  "+operator +"  "+ number2);
+                        showNumbers.setText(number1 + " "+operator +" "+ number2);
+                    }
+                    else if(number1!="" && operator!="" && number2!= "" && number2.contains("-")){
+                        number2= number2.replace("-","");
+                        showNumbers.setText(number1 + " "+operator +" "+ number2);
                     }
                     break;
                     case "CE":
@@ -400,10 +334,8 @@ public class MyFrame extends JFrame {
                         calculate.reset();
                         showNumbers.setText("0");
                         break;
-
                 case "%":
                     if(number1.isEmpty() || !number1.isEmpty() && !operator.isEmpty() && number2.isEmpty()){
-
                     }
                     else if(operator.isEmpty() && number2.isEmpty() && result.isEmpty() && !number1.contains("%") && !number1.contains("√"))
                     {
@@ -412,13 +344,11 @@ public class MyFrame extends JFrame {
                     }
                     else if(number1!="" && operator!="" && result=="" && !number2.contains("%") && !number2.contains("√")){
                         number2= number2 +"%";
-                        showNumbers.setText(number1 + "  "+operator +"  "+ number2);
+                        showNumbers.setText(number1 + " "+operator +" "+ number2);
                     }
                     break;
                 case "√":
-                System.out.println("√");
                     if(number1.isEmpty() || !number1.isEmpty() && !operator.isEmpty() && number2.isEmpty()){
-
                     }
                     else if(operator.isEmpty() && number2.isEmpty() && result.isEmpty() && !number1.contains("√")&& !number1.contains("%"))
                     {
@@ -429,80 +359,57 @@ public class MyFrame extends JFrame {
                     else if(number1!="" && operator!="" && result=="" && !number2.contains("√") && !number2.contains("%")){
                         number2= "√" + number2;
                         number1 = number1.replace("-", "");
-                        showNumbers.setText(number1 + "  "+operator +"  "+ number2);
+                        showNumbers.setText(number1 + " "+operator +" "+ number2);
                     }
                     break;
                     case "²":
                         if(number1.isEmpty() || !number1.isEmpty() && !operator.isEmpty() && number2.isEmpty()){
-
                         }
                         else if(operator.isEmpty() && number2.isEmpty() && result.isEmpty() && !number1.contains("²"))
                         {
                             number1= number1 +"²";
                             showNumbers.setText(number1);
-                            System.out.println(number1 + " number1");
                         }
                         else if(number1!="" && operator!="" && result=="" && !number2.contains("²")){
                             number2= number2 +"²";
-                            showNumbers.setText(number1 + "  "+operator +"  "+ number2);
+                            showNumbers.setText(number1 + " " + operator +" "+ number2);
                         }
-                        break;
-                        case "1/x":
-                        System.out.println("1/x");
-                            if(number1.isEmpty() || !number1.isEmpty() && !operator.isEmpty() && number2.isEmpty()){
-
-                            }
-                            else if(operator.isEmpty() && number2.isEmpty() && result.isEmpty() && !number1.contains("1/x"))
-                            {
-                                number1= "(1/" + number1+"";
-                                showNumbers.setText(number1);
-                            }
-                            else if(number1!="" && operator!="" && result=="" && !number2.contains("1/x")){
-                                number2= "1/" + number2;
-                                showNumbers.setText(number1 + "  "+operator +"  "+ number2);
-                            }
-                            break;
+                        break;             
             }
         }
     };
     ActionListener operatorListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            clickedbutton = (JButton) e.getSource();
             if ((calculate.hasResult(showNumbers.getText()))){
-                clickedbutton = (JButton) e.getSource();
                 operator = clickedbutton.getText();
-
                 String[] updatedArray = calculate.extractNumbersAndOperatorToArray(deleteLastCharacter());
-
                 number1=updatedArray[0];
                 updatedArray[1]=operator;
                 number2=updatedArray[2];
                 result=updatedArray[3];
-
                 setShowNumbers(updatedArray);
             }
-            else if(number2 == "" && number1 !="") {
-                clickedbutton = (JButton) e.getSource();
+            else if(number2.isEmpty() && containsNumbers(number1)) {
                 operator = clickedbutton.getText();
                 showNumbers.setText(number1 + " " + operator);
             }
+            else if(number1.isEmpty() && number2.isEmpty() && clickedbutton.getText().equals("-")){
+                number1 = "-";
+                showNumbers.setText(number1);
+            }
         }
     };
-
     ActionListener deleteSingleDigitButtonListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 String[] updatedArray = calculate.extractNumbersAndOperatorToArray(deleteLastCharacter());
-
                 operator = updatedArray[1];
                 number2 = updatedArray[2];
                 result = updatedArray[3];
                 number1 = updatedArray[0];
-
                 setShowNumbers(updatedArray);
-
                 calculate.reset();
             }
         };
@@ -518,7 +425,6 @@ public class MyFrame extends JFrame {
                     showNumbers.setText(ShowResult);
                     reset();
                     calculate.reset();
-
                 }
                 else if(!number1.isEmpty() && number1.contains("²") && number2.isEmpty() && operator.isEmpty()) {
                     String equation = showNumbers.getText();
@@ -527,11 +433,9 @@ public class MyFrame extends JFrame {
                     showNumbers.setText(ShowResult);
                     reset();
                     calculate.reset();
-
                 }
                 else if ((!number1.isEmpty() && !operator.isEmpty() && !number2.isEmpty())) {
                     String equation = showNumbers.getText();
-                    System.out.println(equation + " equation");
                     calculate.reset();
                     String showResult = calculate.returnResultEquation(equation);
                     showNumbers.setText(showResult);
@@ -540,9 +444,7 @@ public class MyFrame extends JFrame {
                 }
             }
         };
-
     private void reset() {
-
             number1 = "";
             number2 = "";
             operator = "";
@@ -556,6 +458,7 @@ public class MyFrame extends JFrame {
             if (!currentText.isEmpty()) {
                 if (matcher.find()) {
                     currentText = matcher.group(1);
+                    
                 } else if (currentText.charAt(currentText.length() - 1) == ' ') {
                     currentText = currentText.substring(0, currentText.length() - 2);
                 } else {
@@ -566,8 +469,11 @@ public class MyFrame extends JFrame {
                 reset();
                 calculate.reset();
             }
-            System.out.println(currentText + " currentText");
             return currentText;
+        }
+
+        private boolean containsNumbers(String str) {
+            return str.matches(".*\\d.*");
         }
 
         private void setShowNumbers(String[] updatedArray) {
@@ -584,4 +490,8 @@ public class MyFrame extends JFrame {
                 showNumbers.setText("0");
             }
         }
+
+        
+
+        
 }
