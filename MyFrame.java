@@ -308,9 +308,18 @@ public class MyFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             clickedbutton= (JButton) e.getSource();
+            String advancedOperator = clickedbutton.getText();
             switch (clickedbutton.getText()){
                 case "+/-":
                     if(calculate.hasResult(showNumbers.getText())){
+                    }
+                    if ((calculate.hasResult(showNumbers.getText()))){
+                        String[] updatedArray = calculate.extractNumbersAndOperatorToArray(deleteLastCharacter());
+                        number1="-" + updatedArray[0];
+                        operator= updatedArray[1];
+                        number2=updatedArray[2];
+                        result=updatedArray[3];
+                        setShowNumbers(updatedArray);
                     }
                     else if(number1.contains("√") && operator.isEmpty()&& number2.isEmpty()){
                     }
@@ -345,6 +354,14 @@ public class MyFrame extends JFrame {
                 case "%":
                     if(number1.isEmpty() || !number1.isEmpty() && !operator.isEmpty() && number2.isEmpty()){
                     }
+                    if ((calculate.hasResult(showNumbers.getText()))){
+                        String[] updatedArray = calculate.extractNumbersAndOperatorToArray(deleteLastCharacter());
+                        number1=advancedOperator + updatedArray[0];
+                        operator= updatedArray[1];
+                        number2=updatedArray[2];
+                        result=updatedArray[3];
+                        setShowNumbers(updatedArray);
+                    }
                     else if(operator.isEmpty() && number2.isEmpty() && result.isEmpty() && !number1.contains("%") && !number1.contains("√"))
                     {
                         number1= number1 +"%";
@@ -365,6 +382,14 @@ public class MyFrame extends JFrame {
                     break;
                 case "√":
                     if(number1.isEmpty() || !number1.isEmpty() && !operator.isEmpty() && number2.isEmpty()){
+                    }
+                    if ((calculate.hasResult(showNumbers.getText()))){
+                        String[] updatedArray = calculate.extractNumbersAndOperatorToArray(deleteLastCharacter());
+                        number1=advancedOperator + updatedArray[0];
+                        operator= updatedArray[1];
+                        number2=updatedArray[2];
+                        result=updatedArray[3];
+                        setShowNumbers(updatedArray);
                     }
                     else if(operator.isEmpty() && number2.isEmpty() && result.isEmpty() && !number1.contains("√")&& !number1.contains("%"))
                     {
@@ -388,6 +413,14 @@ public class MyFrame extends JFrame {
                     break;
                     case "²":
                         if(number1.isEmpty() || !number1.isEmpty() && !operator.isEmpty() && number2.isEmpty()){
+                        }
+                        if ((calculate.hasResult(showNumbers.getText()))){
+                            String[] updatedArray = calculate.extractNumbersAndOperatorToArray(deleteLastCharacter());
+                            number1=advancedOperator + updatedArray[0];
+                            operator= updatedArray[1];
+                            number2=updatedArray[2];
+                            result=updatedArray[3];
+                            setShowNumbers(updatedArray);
                         }
                         else if(operator.isEmpty() && number2.isEmpty() && result.isEmpty() && !number1.contains("²"))
                         {
