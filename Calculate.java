@@ -10,7 +10,7 @@ public class Calculate {
     boolean isResult=false;
     public String returnResultEquation(String equation) {
         String[] temp = extractNumbersAndOperatorToArray(equation);
-        resultString = chooseCalculation(temp);
+        resultString = calculate(temp);
         return number1String + " " + operatorString + " " + number2String + " = " + resultString; 
     }
     public String[] extractNumbersAndOperatorToArray(String equation) {
@@ -40,36 +40,8 @@ public class Calculate {
         }
         return new String[]{number1String, operatorString, number2String, resultString};
     }
-    public String extractValuesFromArray(String[] containsNumbersAndOperator){
-        double num1;
-        double num2;
-        char op;
-        double result;
-        //if(hasResult())
-        for (int i=0;i<4;i++){
-            try {
-                switch (i) {
-
-                    case 0:
-                        number1String = (containsNumbersAndOperator[i]);
-                        break;
-                    case 1:
-                        op = containsNumbersAndOperator[i].charAt(0);
-                        operatorString= String.valueOf(op);
-                        break;
-                    case 2:
-                        number2String = containsNumbersAndOperator[i];
-                        break;
-                    case 3:
-                        resultString = (containsNumbersAndOperator[i]);
-                }
-            }
-            catch (Exception e){
-            }
-        }
-        return number1String + " " + operatorString + " " + number2String + " = " + resultString;
-    }
-private String chooseCalculation(String array[]) {
+   
+private String calculate(String array[]) {
     String num1 = "0";
     String num2 = "0";
     char op = ' ';
@@ -318,7 +290,7 @@ private String chooseCalculation(String array[]) {
                     }
                     break;
                     case 1:
-                //    number1 = Double.parseDouble(num1);
+                    if(isNumeric(num1)) number1 = Double.parseDouble(num1);
                     op = array[1].charAt(0);
                     break;
                 }
