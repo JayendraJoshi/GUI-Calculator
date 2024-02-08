@@ -1,14 +1,11 @@
 import javax.swing.*;
 
-import javafx.scene.layout.Border;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 public class MyFrame extends JFrame {
     private String number1 = "";
     private String number2 = "";
@@ -333,7 +330,7 @@ public class MyFrame extends JFrame {
                         number1 = number1.replace("-","");
                         showNumbers.setText(number1);
                     }
-                    else if(!number1.isEmpty() && number2.isEmpty() && !number1.contains("-")){
+                    else if(!number1.isEmpty() && number2.isEmpty() && !number1.contains("-") && operator.isEmpty()){
                         number1= "-" + number1;
                         showNumbers.setText(number1);
                     }
@@ -362,12 +359,12 @@ public class MyFrame extends JFrame {
                         result=updatedArray[3];
                         setShowNumbers(updatedArray);
                     }
-                    else if(operator.isEmpty() && number2.isEmpty() && result.isEmpty() && !number1.contains("%") && !number1.contains("√"))
+                    else if(operator.isEmpty() && number2.isEmpty() && result.isEmpty() && !number1.contains("%") && !number1.contains("√") && containsNumbers(number1))
                     {
                         number1= number1 +"%";
                         showNumbers.setText(number1);
                     }
-                    else if(!number1.isEmpty() && !operator.isEmpty() && result=="" && !number2.contains("%") && !number2.contains("√")){
+                    else if(!number1.isEmpty() && !operator.isEmpty() && result=="" && !number2.contains("%") && !number2.contains("√") && containsNumbers(number2)){
                         number2= number2 +"%";
                         showNumbers.setText(number1 + " "+operator +" "+ number2);
                     }
@@ -391,13 +388,13 @@ public class MyFrame extends JFrame {
                         result=updatedArray[3];
                         setShowNumbers(updatedArray);
                     }
-                    else if(operator.isEmpty() && number2.isEmpty() && result.isEmpty() && !number1.contains("√")&& !number1.contains("%"))
+                    else if(operator.isEmpty() && number2.isEmpty() && result.isEmpty() && !number1.contains("√")&& !number1.contains("%") && containsNumbers(number1))
                     {
                         number1= "√" + number1;
                         number1 = number1.replace("-", "");
                         showNumbers.setText(number1);
                     }
-                    else if(number1!="" && operator!="" && result=="" && !number2.contains("√") && !number2.contains("%")){
+                    else if(number1!="" && operator!="" && result=="" && !number2.contains("√") && !number2.contains("%") && containsNumbers(number2)){
                         number2= "√" + number2;
                         number1 = number1.replace("-", "");
                         showNumbers.setText(number1 + " "+operator +" "+ number2);
@@ -422,12 +419,12 @@ public class MyFrame extends JFrame {
                             result=updatedArray[3];
                             setShowNumbers(updatedArray);
                         }
-                        else if(operator.isEmpty() && number2.isEmpty() && result.isEmpty() && !number1.contains("²"))
+                        else if(operator.isEmpty() && number2.isEmpty() && result.isEmpty() && !number1.contains("²") &&containsNumbers(number1))
                         {
                             number1= number1 +"²";
                             showNumbers.setText(number1);
                         }
-                        else if(number1!="" && operator!="" && result=="" && !number2.contains("²")){
+                        else if(number1!="" && operator!="" && result=="" && !number2.contains("²") && containsNumbers(number2)){
                             number2= number2 +"²";
                             showNumbers.setText(number1 + " " + operator +" "+ number2);
                         }
@@ -466,11 +463,7 @@ public class MyFrame extends JFrame {
                 showNumbers.setText(number1 + " " + operator);
 
             }
-            /* 
-            else if(number1.isEmpty() && number2.isEmpty() && clickedbutton.getText().equals("-")){
-                number1 = "-";
-                showNumbers.setText(number1);
-            }*/
+          
         }
     };
     ActionListener deleteSingleDigitButtonListener = new ActionListener() {
