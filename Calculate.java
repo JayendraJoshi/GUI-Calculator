@@ -9,11 +9,11 @@ public class Calculate {
     String resultString = "";
     boolean isResult=false;
     public String returnResultEquation(String equation) {
-        String[] temp = extractNumbersAndOperatorToArray(equation);
-        resultString = calculate(temp);
+        String[] temp = extractValuesToArray(equation);
+        resultString = formatValuesForCalculation(temp);
         return number1String + " " + operatorString + " " + number2String + " = " + resultString; 
     }
-    public String[] extractNumbersAndOperatorToArray(String equation) {
+    public String[] extractValuesToArray(String equation) {
         char currentChar;
         for (int i = 0; i < equation.length(); i++) {
             currentChar = equation.charAt(i);
@@ -41,7 +41,8 @@ public class Calculate {
         return new String[]{number1String, operatorString, number2String, resultString};
     }
    
-private String calculate(String array[]) {
+    //This method formats the values of the String array into digits and operators, so that they can be used in the calculations
+private String formatValuesForCalculation(String array[]) {
     String num1 = "0";
     String num2 = "0";
     char op = ' ';
@@ -73,7 +74,7 @@ private String calculate(String array[]) {
                         num1 += String.valueOf(array[i].charAt(j));
                     }
                     else if(array[i].charAt(j)=='√'){
-                        //if String contains other special symbols besides √, the order of the symbols needs to be established first to calculate in the right order
+                        //if String contains other special symbols besides √, the order of the symbols needs to be established first to formatEquation in the right order
                         if(array[i].contains("%")&& array[i].contains("²")){ //In case String contains √, % and ²
                           index1= array[i].indexOf("%");
                           index2= array[i].indexOf("²");
@@ -188,7 +189,7 @@ private String calculate(String array[]) {
                         num2 += String.valueOf(array[i].charAt(j));
                     }
                     else if(array[i].charAt(j)=='√'){
-                        //if String contains other special symbols besides √, the order of the symbols needs to be established first to calculate in the right order
+                        //if String contains other special symbols besides √, the order of the symbols needs to be established first to formatEquation in the right order
                         if(array[i].contains("%")&& array[i].contains("²")){ //In case String contains √, % and ²   
                           index1= array[i].indexOf("%");
                           index2= array[i].indexOf("²");
@@ -300,8 +301,16 @@ private String calculate(String array[]) {
                 }
             }
         }
+
+        return returnResult(num1, num2, op, temp);
+    }
+private String returnResult(String num1, String num2, char op, String temp){
+
+    double number1 =0;
+    double number2 =0;
+    number1= Double.parseDouble(num1);
+        
     if((op!= '\u0000' && op!=' ')){
-      number1 = Double.parseDouble(num1);
        number2 = Double.parseDouble(num2);
        switch (op) {
             case '+':
@@ -339,7 +348,8 @@ private String calculate(String array[]) {
     number1=0;
     number2=0;
     return resultString;
-}
+    }
+
     private static double addition(double number1, double number2){
         double result= number1+ number2;
         return result;
