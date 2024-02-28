@@ -40,9 +40,8 @@ public class Calculate {
         }
         return new String[]{number1String, operatorString, number2String, resultString};
     }
-   
     //This method formats the values of the String array into digits and operators, so that they can be used in the calculations
-private String formatValuesForCalculation(String array[]) {
+    private String formatValuesForCalculation(String array[]) {
     String num1 = "0";
     String num2 = "0";
     char op = ' ';
@@ -56,8 +55,6 @@ private String formatValuesForCalculation(String array[]) {
         number2 = 0;  // Reset number2 to 0
         //Put the original value of num1 in temp, to be displayed in the gui if number1String is the only variable used. E.G. 6² stays in temp while the result is stored in number1String and resultString
         temp = array[0];
-        int index1 = 0;
-        int index2 = 0;
         for(int i=0;i<array.length;i++){
             for(int j=0;j< array[i].length();j++){          
                 switch(i)
@@ -79,7 +76,6 @@ private String formatValuesForCalculation(String array[]) {
                     breakIterator=true; 
                     }
                     else if(array[i].charAt(j)=='²'){
-
                         number1=formatPowerOfTwoForNum1(array[i], num1, number1, number2);
                         num1= String.valueOf(number1);
                         breakIterator=true;
@@ -88,7 +84,6 @@ private String formatValuesForCalculation(String array[]) {
                         number1 = formatPercentageForNum1(array[i], num1, number1, number2);
                         num1= String.valueOf(number1);
                         breakIterator=true;
-                        
                     }
                     break;
                     case 2:
@@ -115,31 +110,6 @@ private String formatValuesForCalculation(String array[]) {
                     else if(array[i].charAt(j)=='%'){ 
                         number2= formatPercentageForNum2(array[i],temp, num1, num2, number1, number2);
                         num2= String.valueOf(number2);
-                        /* 
-                        if(array[i].contains("²")){ //In case String contains % and ²
-                            index1= array[i].indexOf("%");
-                            index2= array[i].indexOf("²");
-                            num2 =String.valueOf(array[i]).replace("%", "");
-                            num2= num1.replace("²", "");
-                            number2 = Double.parseDouble(num2);
-                            num2=String.valueOf(number2);
-                            if(index1>index2){
-                                number2 = percentage(number1, number2, (byte)2, containsCharacters(num1, "%"));
-                                number2= square(number2);
-                                num2=String.valueOf(number2);
-                            }
-                            else if(index1<index2){
-                                number2= square(number2);
-                                number2 = percentage(number1, number2, (byte)2, containsCharacters(num1, "%"));
-                                num2=String.valueOf(number2);
-                            }
-                        }
-                        else{ //In case String only contains %
-                            num2 =String.valueOf(array[i]).replace("%", "");
-                            number2 = Double.parseDouble(num2);
-                            number2 = percentage(number1, number2, (byte)2, containsCharacters(temp, "%"));// use temp instead as temp has the original value of num1 and num1 has already been updated at this point
-                            num2=String.valueOf(number2);
-                        }*/
                         breakIterator=true;
                     }
                     break;
@@ -154,10 +124,9 @@ private String formatValuesForCalculation(String array[]) {
                 }
             }
         }
-
         return returnResult(num1, num2, op, temp);
     }
-private String returnResult(String num1, String num2, char op, String temp){
+    private String returnResult(String num1, String num2, char op, String temp){
 
     double number1 =0;
     double number2 =0;
@@ -237,11 +206,11 @@ private String returnResult(String num1, String num2, char op, String temp){
         }
         return result;
     }
+   
     public static double squareRoot(double number1){
 
         return Math.sqrt(number1);
     }
-    //new method to improve modularity of code, it's untested and may not work properly
     public double formatSquareRootForNum1(String i, String num1, double number1, double number2){
         int index1 = 0;
         int index2 = 0;
@@ -343,7 +312,7 @@ private String returnResult(String num1, String num2, char op, String temp){
           }
           return number2;
     }
-public double formatPowerOfTwoForNum1(String i, String num1, double number1, double number2){
+    public double formatPowerOfTwoForNum1(String i, String num1, double number1, double number2){
 
     int index1 = 0;
     int index2 = 0;
@@ -375,7 +344,7 @@ public double formatPowerOfTwoForNum1(String i, String num1, double number1, dou
     return number1;
 
 }
-public double formatPowerOfTwoForNum2(String i,String num1, String num2, double number1, double number2){
+    public double formatPowerOfTwoForNum2(String i,String num1, String num2, double number1, double number2){
     int index1 = 0;
     int index2 = 0;
 if(i.contains("%")){ //In case String contains ² and %
@@ -405,7 +374,7 @@ else{ //In case String only contains ²
 
 return number2;
 }
- public double formatPercentageForNum1(String i, String num1, double number1, double number2){
+    public double formatPercentageForNum1(String i, String num1, double number1, double number2){
 
 
     int index1 = 0;
@@ -437,7 +406,7 @@ return number2;
 return number1;
 
 }  
-public double formatPercentageForNum2(String i,String temp, String num1, String num2, double number1, double number2){
+    public double formatPercentageForNum2(String i,String temp, String num1, String num2, double number1, double number2){
 
     int index1 = 0;
     int index2 = 0;
@@ -467,7 +436,7 @@ public double formatPercentageForNum2(String i,String temp, String num1, String 
     }
 return number2;
 }
-
+    
     public void reset(){
         number1String="";
         number2String="";
