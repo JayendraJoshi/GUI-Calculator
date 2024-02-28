@@ -311,7 +311,7 @@ public class MyFrame extends JFrame {
                     if(calculate.hasResult(showNumbers.getText())){
                     }
                     if ((calculate.hasResult(showNumbers.getText()))){
-                        String[] updatedArray = calculate.extractNumbersAndOperatorToArray(deleteLastCharacter());
+                        String[] updatedArray = calculate.extractValuesToArray(deleteLastCharacter());
                         number1="-" + updatedArray[0];
                         operator= updatedArray[1];
                         number2=updatedArray[2];
@@ -352,7 +352,7 @@ public class MyFrame extends JFrame {
                     if(number1.isEmpty() || !number1.isEmpty() && !operator.isEmpty() && number2.isEmpty()){
                     }
                     if ((calculate.hasResult(showNumbers.getText()))){
-                        String[] updatedArray = calculate.extractNumbersAndOperatorToArray(deleteLastCharacter());
+                        String[] updatedArray = calculate.extractValuesToArray(deleteLastCharacter());
                         number1=advancedOperator + updatedArray[0];
                         operator= updatedArray[1];
                         number2=updatedArray[2];
@@ -381,7 +381,7 @@ public class MyFrame extends JFrame {
                     if(number1.isEmpty() || !number1.isEmpty() && !operator.isEmpty() && number2.isEmpty()){
                     }
                     if ((calculate.hasResult(showNumbers.getText()))){
-                        String[] updatedArray = calculate.extractNumbersAndOperatorToArray(deleteLastCharacter());
+                        String[] updatedArray = calculate.extractValuesToArray(deleteLastCharacter());
                         number1=advancedOperator + updatedArray[0];
                         operator= updatedArray[1];
                         number2=updatedArray[2];
@@ -412,7 +412,7 @@ public class MyFrame extends JFrame {
                         if(number1.isEmpty() || !number1.isEmpty() && !operator.isEmpty() && number2.isEmpty()){
                         }
                         if ((calculate.hasResult(showNumbers.getText()))){
-                            String[] updatedArray = calculate.extractNumbersAndOperatorToArray(deleteLastCharacter());
+                            String[] updatedArray = calculate.extractValuesToArray(deleteLastCharacter());
                             number1=advancedOperator + updatedArray[0];
                             operator= updatedArray[1];
                             number2=updatedArray[2];
@@ -446,7 +446,7 @@ public class MyFrame extends JFrame {
             clickedbutton = (JButton) e.getSource();
             if ((calculate.hasResult(showNumbers.getText()))){
                 operator = clickedbutton.getText();
-                String[] updatedArray = calculate.extractNumbersAndOperatorToArray(deleteLastCharacter());
+                String[] updatedArray = calculate.extractValuesToArray(deleteLastCharacter());
                 number1=updatedArray[0];
                 updatedArray[1]=operator;
                 number2=updatedArray[2];
@@ -469,7 +469,7 @@ public class MyFrame extends JFrame {
     ActionListener deleteSingleDigitButtonListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String[] updatedArray = calculate.extractNumbersAndOperatorToArray(deleteLastCharacter());
+                String[] updatedArray = calculate.extractValuesToArray(deleteLastCharacter());
                 operator = updatedArray[1];
                 number2 = updatedArray[2];
                 result = updatedArray[3];
