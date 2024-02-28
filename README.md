@@ -1,5 +1,3 @@
-Certainly! Below is a concise README for your **Java GUI Calculator** project written using Swing:
-
 # Java GUI Calculator
 
 This project is a simple calculator application with a graphical user interface (GUI) built using Java Swing. It allows users to perform basic arithmetic operations while using mathematical notations just as '%','²' or '√'.
