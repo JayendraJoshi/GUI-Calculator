@@ -74,108 +74,21 @@ private String formatValuesForCalculation(String array[]) {
                         num1 += String.valueOf(array[i].charAt(j));
                     }
                     else if(array[i].charAt(j)=='√'){
-                        //if String contains other special symbols besides √, the order of the symbols needs to be established first to formatEquation in the right order
-                        if(array[i].contains("%")&& array[i].contains("²")){ //In case String contains √, % and ²
-                          index1= array[i].indexOf("%");
-                          index2= array[i].indexOf("²");
-                          num1 =String.valueOf(array[i]).replace("√", "");
-                          num1= num1.replace("%", "");
-                            num1= num1.replace("²", "");
-                            number1 = Double.parseDouble(num1);
-                            num1=String.valueOf(number1);
-                          if(index1>index2){
-                           number1= square(number1);
-                           number1 = percentage(number1, number2, (byte)1, containsCharacters(num1, "%"));
-                            number1 = Math.sqrt(number1);
-                            num1=String.valueOf(number1); //Current value needs to be assigned to num1, as after the loop the final values of num1 and num2 need to be assigned to number1 and number2 once again, as a direct assignment is not possible because of the '.', whcih can not be directly put into a double
-                          }
-                          else if(index1<index2){
-                            number1 = percentage(number1, number2, (byte)1, containsCharacters(num1, "%"));
-                            number1= square(number1);
-                            number1 = Math.sqrt(number1);  
-                            num1=String.valueOf(number1);
-                          }                        
-                          breakIterator=true;
-                        }
-                        else if (array[i].contains("%")){ //In case String contains √ and %
-                            num1 =String.valueOf(array[i]).replace("√", "");
-                            num1= num1.replace("%", "");
-                            number1 = Double.parseDouble(num1);
-                            number1 = percentage(number1, number2, (byte)1, containsCharacters(num1, "%"));
-                            number1 = Math.sqrt(number1);      
-                            num1=String.valueOf(number1);   
-                            breakIterator=true;      
-                        }
-                        else if(array[i].contains("²")){ //In case String contains √ and ²
-                            num1 =String.valueOf(array[i]).replace("√", "");
-                            num1= num1.replace("²", "");
-                            number1 = Double.parseDouble(num1);
-                            number1 = square(number1);
-                            number1 = Math.sqrt(number1);   
-                            num1=String.valueOf(number1);     
-                            breakIterator=true;
-                        }
-                        else{ //In case String only contains √
-                            num1 =String.valueOf(array[i]).replace("√", "");
-                            number1 = Double.parseDouble(num1);
-                            number1 = Math.sqrt(number1);      
-                            num1=String.valueOf(number1);  
-                            breakIterator=true;    
-                        }
+                     number1=formatSquareRootForNum1(array[i], num1, number1, number2);
+                     num1= String.valueOf(number1);
+                    breakIterator=true; 
                     }
                     else if(array[i].charAt(j)=='²'){
-                       if(array[i].contains("%")){ //In case String contains ² and %
-                            index1= array[i].indexOf("%");
-                            index2= array[i].indexOf("²");
-                            num1 =String.valueOf(array[i]).replace("²", "");
-                            num1= num1.replace("%", "");
-                            number1 = Double.parseDouble(num1);
-                            num1=String.valueOf(number1);
-                            if(index1>index2){
-                                number1= square(number1);
-                                number1 = percentage(number1, number2, (byte)1, containsCharacters(num1, "%"));
-                                num1=String.valueOf(number1);
-                            }
-                            else if(index1<index2){
-                                number1 = percentage(number1, number2, (byte)1, containsCharacters(num1, "%"));
-                                number1= square(number1);
-                                num1=String.valueOf(number1);
-                            }
-                        }
-                        else{ //In case String only contains ²
-                            num1 =String.valueOf(array[i]).replace("²", "");
-                            number1 = Double.parseDouble(num1);
-                            number1 = square(number1);
-                            num1=String.valueOf(number1);
-                        }
+
+                        number1=formatPowerOfTwoForNum1(array[i], num1, number1, number2);
+                        num1= String.valueOf(number1);
                         breakIterator=true;
                     }
                     else if(array[i].charAt(j)=='%'){ 
-                        if(array[i].contains("²")){ //In case String contains % and ²
-                            index1= array[i].indexOf("%");
-                            index2= array[i].indexOf("²");
-                            num1 =String.valueOf(array[i]).replace("%", "");
-                            num1= num1.replace("²", "");
-                            number1 = Double.parseDouble(num1);
-                            num1=String.valueOf(number1);
-                            if(index1>index2){
-                                number1 = percentage(number1, number2, (byte)1, containsCharacters(num1, "%"));
-                                number1= square(number1);
-                                num1=String.valueOf(number1);
-                            }
-                            else if(index1<index2){
-                                number1= square(number1);
-                                number1 = percentage(number1, number2, (byte)1, containsCharacters(num1, "%"));
-                                num1=String.valueOf(number1);
-                            }
-                        }
-                        else{ //In case String only contains %
-                            num1 =String.valueOf(array[i]).replace("%", "");
-                            number1 = Double.parseDouble(num1);
-                            number1 = percentage(number1, number2, (byte)1, containsCharacters(num1, "%"));
-                            num1=String.valueOf(number1);
-                        }
+                        number1 = formatPercentageForNum1(array[i], num1, number1, number2);
+                        num1= String.valueOf(number1);
                         breakIterator=true;
+                        
                     }
                     break;
                     case 2:
@@ -189,80 +102,20 @@ private String formatValuesForCalculation(String array[]) {
                         num2 += String.valueOf(array[i].charAt(j));
                     }
                     else if(array[i].charAt(j)=='√'){
-                        //if String contains other special symbols besides √, the order of the symbols needs to be established first to formatEquation in the right order
-                        if(array[i].contains("%")&& array[i].contains("²")){ //In case String contains √, % and ²   
-                          index1= array[i].indexOf("%");
-                          index2= array[i].indexOf("²");
-                          num2 =String.valueOf(array[i]).replace("√", "");
-                          num2= num2.replace("%", "");
-                            num2= num2.replace("²", "");
-                            number2 = Double.parseDouble(num2);
-                            num2=String.valueOf(number2);
-                          if(index1>index2){
-                           number2= square(number2);
-                           number2 = percentage(number1, number2, (byte)2, containsCharacters(num1, "%"));
-                            number2 = Math.sqrt(number2);
-                            num2=String.valueOf(number2);
-                          }
-                          else if(index1<index2){
-                            number2 = percentage(number1, number2, (byte)2, containsCharacters(num1, "%"));
-                            number2= square(number2);
-                            number2 = Math.sqrt(number2);  
-                            num2=String.valueOf(number2);
-                          }     
-                        }
-                        else if (array[i].contains("%")){ //In case String contains √ and %
-                            num2 =String.valueOf(array[i]).replace("√", "");
-                            num2= num2.replace("%", "");
-                            number2 = Double.parseDouble(num2);
-                            number2 = percentage(number1, number2, (byte)2, containsCharacters(num1, "%"));
-                            number2 = Math.sqrt(number2);
-                            num2=String.valueOf(number2);   
-                        }
-                        else if(array[i].contains("²")){ //In case String contains √ and ²
-                            num2 =String.valueOf(array[i]).replace("√", "");
-                            num2= num2.replace("²", "");
-                            number2= Double.parseDouble(num2);
-                            number2 = square(number2);
-                            number2 = Math.sqrt(number2);    
-                            num2=String.valueOf(number2);    
-                        }
-                        else{ //In case String only contains √
-                            num2 =String.valueOf(array[i]).replace("√", "");
-                            number2 = Double.parseDouble(num2);
-                            number2 = Math.sqrt(number2);      
-                            num2=String.valueOf(number2);      
-                        }
+                        number2=formatSquareRootForNum2(array[i], num1,num2, number1, number2);
+                        num2= String.valueOf(number2);
                         breakIterator=true;
                     }
                     else if(array[i].charAt(j)=='²'){
-                       if(array[i].contains("%")){ //In case String contains ² and %
-                            index1= array[i].indexOf("%");
-                            index2= array[i].indexOf("²");
-                            num2 =String.valueOf(array[i]).replace("²", "");
-                            num2= num2.replace("%", "");
-                            number2 = Double.parseDouble(num2);
-                            num2=String.valueOf(number2);
-                            if(index1>index2){
-                                number2= square(number2);
-                                number2 = percentage(number1, number2, (byte)2, containsCharacters(num1, "%"));
-                                num2=String.valueOf(number2);
-                            }
-                            else if(index1<index2){
-                                number2 = percentage(number1, number2, (byte)2, containsCharacters(num1, "%"));
-                                number2= square(number2);
-                                num2=String.valueOf(number2);
-                            }
-                        }
-                        else{ //In case String only contains ²
-                            num2 =String.valueOf(array[i]).replace("²", "");
-                            number2 = Double.parseDouble(num2);
-                            number2 = square(number2);
-                            num2=String.valueOf(number2);
-                        }
+
+                        number2=formatPowerOfTwoForNum2(array[i],num1,num2, number1,number2);
+                        num2= String.valueOf(number2);
                         breakIterator=true;
                     }
                     else if(array[i].charAt(j)=='%'){ 
+                        number2= formatPercentageForNum2(array[i],temp, num1, num2, number1, number2);
+                        num2= String.valueOf(number2);
+                        /* 
                         if(array[i].contains("²")){ //In case String contains % and ²
                             index1= array[i].indexOf("%");
                             index2= array[i].indexOf("²");
@@ -286,7 +139,7 @@ private String formatValuesForCalculation(String array[]) {
                             number2 = Double.parseDouble(num2);
                             number2 = percentage(number1, number2, (byte)2, containsCharacters(temp, "%"));// use temp instead as temp has the original value of num1 and num1 has already been updated at this point
                             num2=String.valueOf(number2);
-                        }
+                        }*/
                         breakIterator=true;
                     }
                     break;
@@ -385,8 +238,236 @@ private String returnResult(String num1, String num2, char op, String temp){
         return result;
     }
     public static double squareRoot(double number1){
+
         return Math.sqrt(number1);
     }
+    //new method to improve modularity of code, it's untested and may not work properly
+    public double formatSquareRootForNum1(String i, String num1, double number1, double number2){
+        int index1 = 0;
+        int index2 = 0;
+         //if String contains other special symbols besides √, the order of the symbols needs to be established first to formatEquation in the right order
+         if(i.contains("%")&& i.contains("²")){ //In case String contains √, % and ²
+            index1= i.indexOf("%");
+            index2= i.indexOf("²");
+            num1 =String.valueOf(i).replace("√", "");
+            num1= num1.replace("%", "");
+              num1= num1.replace("²", "");
+              number1 = Double.parseDouble(num1);
+              num1=String.valueOf(number1);
+            if(index1>index2){
+             number1= square(number1);
+             number1 = percentage(number1, number2, (byte)1, containsCharacters(num1, "%"));
+              number1 = Math.sqrt(number1);
+              num1=String.valueOf(number1); //Current value needs to be assigned to num1, as after the loop the final values of num1 and num2 need to be assigned to number1 and number2 once again, as a direct assignment is not possible because of the '.', whcih can not be directly put into a double
+            }
+            else if(index1<index2){
+              number1 = percentage(number1, number2, (byte)1, containsCharacters(num1, "%"));
+              number1= square(number1);
+              number1 = Math.sqrt(number1);  
+              num1=String.valueOf(number1);
+            }                        
+            
+          }
+          else if (i.contains("%")){ //In case String contains √ and %
+              num1 =String.valueOf(i).replace("√", "");
+              num1= num1.replace("%", "");
+              number1 = Double.parseDouble(num1);
+              number1 = percentage(number1, number2, (byte)1, containsCharacters(num1, "%"));
+              number1 = Math.sqrt(number1);      
+              num1=String.valueOf(number1);   
+                    
+          }
+          else if(i.contains("²")){ //In case String contains √ and ²
+              num1 =String.valueOf(i).replace("√", "");
+              num1= num1.replace("²", "");
+              number1 = Double.parseDouble(num1);
+              number1 = square(number1);
+              number1 = Math.sqrt(number1);   
+              num1=String.valueOf(number1);     
+              
+          }
+          else{ //In case String only contains √
+              num1 =String.valueOf(i).replace("√", "");
+              number1 = Double.parseDouble(num1);
+              number1 = Math.sqrt(number1);      
+              num1=String.valueOf(number1);  
+          }
+          return number1;
+    }
+    public double formatSquareRootForNum2(String i, String num1,String num2, double number1, double number2){
+        int index1 = 0;
+        int index2 = 0;
+         //if String contains other special symbols besides √, the order of the symbols needs to be established first to formatEquation in the right order
+         if(i.contains("%")&& i.contains("²")){ //In case String contains √, % and ²   
+            index1= i.indexOf("%");
+            index2= i.indexOf("²");
+            num2 =String.valueOf(i).replace("√", "");
+            num2= num2.replace("%", "");
+              num2= num2.replace("²", "");
+              number2 = Double.parseDouble(num2);
+              num2=String.valueOf(number2);
+            if(index1>index2){
+             number2= square(number2);
+             number2 = percentage(number1, number2, (byte)2, containsCharacters(num1, "%"));
+              number2 = Math.sqrt(number2);
+              num2=String.valueOf(number2);
+            }
+            else if(index1<index2){
+              number2 = percentage(number1, number2, (byte)2, containsCharacters(num1, "%"));
+              number2= square(number2);
+              number2 = Math.sqrt(number2);  
+              num2=String.valueOf(number2);
+            }     
+          }
+          else if (i.contains("%")){ //In case String contains √ and %
+              num2 =String.valueOf(i).replace("√", "");
+              num2= num2.replace("%", "");
+              number2 = Double.parseDouble(num2);
+              number2 = percentage(number1, number2, (byte)2, containsCharacters(num1, "%"));
+              number2 = Math.sqrt(number2);
+              num2=String.valueOf(number2);   
+          }
+          else if(i.contains("²")){ //In case String contains √ and ²
+              num2 =String.valueOf(i).replace("√", "");
+              num2= num2.replace("²", "");
+              number2= Double.parseDouble(num2);
+              number2 = square(number2);
+              number2 = Math.sqrt(number2);    
+              num2=String.valueOf(number2);    
+          }
+          else{ //In case String only contains √
+              num2 =String.valueOf(i).replace("√", "");
+              number2 = Double.parseDouble(num2);
+              number2 = Math.sqrt(number2);      
+              num2=String.valueOf(number2);      
+          }
+          return number2;
+    }
+public double formatPowerOfTwoForNum1(String i, String num1, double number1, double number2){
+
+    int index1 = 0;
+    int index2 = 0;
+
+    if(i.contains("%")){ //In case String contains ² and %
+        index1= i.indexOf("%");
+        index2= i.indexOf("²");
+        num1 =String.valueOf(i).replace("²", "");
+        num1= num1.replace("%", "");
+        number1 = Double.parseDouble(num1);
+        num1=String.valueOf(number1);
+        if(index1>index2){
+            number1= square(number1);
+            number1 = percentage(number1, number2, (byte)1, containsCharacters(num1, "%"));
+            num1=String.valueOf(number1);
+        }
+        else if(index1<index2){
+            number1 = percentage(number1, number2, (byte)1, containsCharacters(num1, "%"));
+            number1= square(number1);
+            num1=String.valueOf(number1);
+        }
+    }
+    else{ //In case String only contains ²
+        num1 =String.valueOf(i).replace("²", "");
+        number1 = Double.parseDouble(num1);
+        number1 = square(number1);
+        num1=String.valueOf(number1);
+    }
+    return number1;
+
+}
+public double formatPowerOfTwoForNum2(String i,String num1, String num2, double number1, double number2){
+    int index1 = 0;
+    int index2 = 0;
+if(i.contains("%")){ //In case String contains ² and %
+    index1= i.indexOf("%");
+    index2= i.indexOf("²");
+    num2 =String.valueOf(i).replace("²", "");
+    num2= num2.replace("%", "");
+    number2 = Double.parseDouble(num2);
+    num2=String.valueOf(number2);
+    if(index1>index2){
+        number2= square(number2);
+        number2 = percentage(number1, number2, (byte)2, containsCharacters(num1, "%"));
+        num2=String.valueOf(number2);
+    }
+    else if(index1<index2){
+        number2 = percentage(number1, number2, (byte)2, containsCharacters(num1, "%"));
+        number2= square(number2);
+        num2=String.valueOf(number2);
+    }
+}
+else{ //In case String only contains ²
+    num2 =String.valueOf(i).replace("²", "");
+    number2 = Double.parseDouble(num2);
+    number2 = square(number2);
+    num2=String.valueOf(number2);
+}
+
+return number2;
+}
+ public double formatPercentageForNum1(String i, String num1, double number1, double number2){
+
+
+    int index1 = 0;
+    int index2 = 0;
+    if(i.contains("²")){ //In case String contains % and ²
+        index1= i.indexOf("%");
+        index2= i.indexOf("²");
+        num1 =String.valueOf(i).replace("%", "");
+        num1= num1.replace("²", "");
+        number1 = Double.parseDouble(num1);
+        num1=String.valueOf(number1);
+        if(index1>index2){
+            number1 = percentage(number1, number2, (byte)1, containsCharacters(num1, "%"));
+            number1= square(number1);
+            num1=String.valueOf(number1);
+        }
+        else if(index1<index2){
+            number1= square(number1);
+            number1 = percentage(number1, number2, (byte)1, containsCharacters(num1, "%"));
+            num1=String.valueOf(number1);
+        }
+    }
+    else{ //In case String only contains %
+        num1 =String.valueOf(i).replace("%", "");
+        number1 = Double.parseDouble(num1);
+        number1 = percentage(number1, number2, (byte)1, containsCharacters(num1, "%"));
+        num1=String.valueOf(number1);
+    }
+return number1;
+
+}  
+public double formatPercentageForNum2(String i,String temp, String num1, String num2, double number1, double number2){
+
+    int index1 = 0;
+    int index2 = 0;
+    if(i.contains("²")){ //In case String contains % and ²
+        index1= i.indexOf("%");
+        index2= i.indexOf("²");
+        num2 =String.valueOf(i).replace("%", "");
+        num2= num1.replace("²", "");
+        number2 = Double.parseDouble(num2);
+        num2=String.valueOf(number2);
+        if(index1>index2){
+            number2 = percentage(number1, number2, (byte)2, containsCharacters(num1, "%"));
+            number2= square(number2);
+            num2=String.valueOf(number2);
+        }
+        else if(index1<index2){
+            number2= square(number2);
+            number2 = percentage(number1, number2, (byte)2, containsCharacters(num1, "%"));
+            num2=String.valueOf(number2);
+        }
+    }
+    else{ //In case String only contains %
+        num2 =String.valueOf(i).replace("%", "");
+        number2 = Double.parseDouble(num2);
+        number2 = percentage(number1, number2, (byte)2, containsCharacters(temp, "%"));// use temp instead as temp has the original value of num1 and num1 has already been updated at this point
+        num2=String.valueOf(number2);
+    }
+return number2;
+}
+
     public void reset(){
         number1String="";
         number2String="";
